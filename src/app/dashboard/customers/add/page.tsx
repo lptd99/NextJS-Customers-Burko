@@ -18,98 +18,59 @@ import {
 } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
+import { Spinner } from "@/components/ui/spinner";
+import { CustomerZodSchema } from "@/schemas/CustomerZodSchema";
+import { zodResolver } from "@hookform/resolvers/zod";
+import axios from "axios";
 import { ShieldAlert } from "lucide-react";
 import { useState } from "react";
+import { SubmitHandler, useForm } from "react-hook-form";
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
+import { z } from "zod";
 
 export default function CustomersAdd() {
-  const [name, setName] = useState<string>("");
-  const [email, setEmail] = useState<string>("");
-  const [phone, setPhone] = useState<string>("");
-  const [address, setAddress] = useState<string>("");
-  const [city, setCity] = useState<string>("");
-  const [state, setState] = useState<string>("");
-  const [postalCode, setPostalCode] = useState<string>("");
-  const [country, setCountry] = useState<string>("");
+  const [loading, setLoading] = useState<boolean>(false);
+  type Inputs = z.infer<typeof CustomerZodSchema>;
 
-  const [hasNameError, setHasNameError] = useState<boolean>(false);
-  const [hasEmailError, setHasEmailError] = useState<boolean>(false);
-  const [hasPhoneError, setHasPhoneError] = useState<boolean>(false);
-  const [hasAddressError, setHasAddressError] = useState<boolean>(false);
-  const [hasCityError, setHasCityError] = useState<boolean>(false);
-  const [hasStateError, setHasStateError] = useState<boolean>(false);
-  const [hasPostalCodeError, setHasPostalCodeError] = useState<boolean>(false);
-  const [hasCountryError, setHasCountryError] = useState<boolean>(false);
+  const success = (text: string) => toast.success(text);
 
-  function handleSubmit() {
-    if (validateForm()) {
-      console.log(email + " = email, " + " = password");
-    }
-  }
+  const {
+    register,
+    handleSubmit,
+    watch,
+    reset,
+    formState: { errors },
+  } = useForm<Inputs>({
+    mode: "onBlur",
+    resolver: zodResolver(CustomerZodSchema),
+  });
+
+  const processForm: SubmitHandler<Inputs> = async (data) => {
+    setLoading(true);
+    try {
+      await new Promise((resolve) => setTimeout(resolve, 2000));
+      const response = await axios.post(
+        "http://localhost:4000/customers",
+        data
+      );
+      success("Cliente adicionado com sucesso!");
+      setLoading(false);
+      reset();
+    } catch (error) {}
+  };
 
   function hasAnyError() {
     return (
-      hasNameError ||
-      hasEmailError ||
-      hasPhoneError ||
-      hasAddressError ||
-      hasCityError ||
-      hasStateError ||
-      hasPostalCodeError ||
-      hasCountryError
+      errors.name?.message ||
+      errors.email?.message ||
+      errors.phone?.message ||
+      errors.address?.message ||
+      errors.city?.message ||
+      errors.state?.message ||
+      errors.postal_code?.message ||
+      errors.country?.message
     );
-  }
-
-  function validateName() {
-    if (name.length === 0) {
-      setHasNameError(true);
-    } else setHasNameError(false);
-  }
-  function validateEmail() {
-    if (email.length === 0 || !email.includes("@")) {
-      setHasEmailError(true);
-    } else setHasEmailError(false);
-  }
-  function validatePhone() {
-    if (phone.length === 0) {
-      setHasPhoneError(true);
-    } else setHasPhoneError(false);
-  }
-  function validateAddress() {
-    if (address.length === 0) {
-      setHasAddressError(true);
-    } else setHasAddressError(false);
-  }
-  function validateCity() {
-    if (city.length === 0) {
-      setHasCityError(true);
-    } else setHasCityError(false);
-  }
-  function validateState() {
-    if (state.length === 0) {
-      setHasStateError(true);
-    } else setHasStateError(false);
-  }
-  function validatePostalCode() {
-    if (postalCode.length === 0) {
-      setHasPostalCodeError(true);
-    } else setHasPostalCodeError(false);
-  }
-  function validateCountry() {
-    if (country.length === 0) {
-      setHasCountryError(true);
-    } else setHasCountryError(false);
-  }
-
-  function validateForm() {
-    validateName();
-    validateEmail();
-    validatePhone();
-    validateAddress();
-    validateCity();
-    validateState();
-    validatePostalCode();
-    validateCountry();
-    return !hasAnyError();
   }
 
   return (
@@ -136,184 +97,178 @@ export default function CustomersAdd() {
         </Breadcrumb>
       </section>
       <section className='flex flex-col items-center pb-14'>
-        <Card className='w-full mt-10'>
-          <CardHeader className='w-full items-center gap-1'>
-            <CardTitle>Novo Cliente</CardTitle>
-            <CardDescription>Preencha os dados abaixo</CardDescription>
-          </CardHeader>
-          <CardContent className=''>
-            <section className='grid grid-cols-1 md:md:grid-cols-2 lg:grid-cols-3 w-full items-center gap-4'>
-              <section>
-                <Label
-                  htmlFor='Name'
-                  className={hasNameError ? "text-error" : ""}>
-                  Nome
-                </Label>
-                <Input
-                  type='text'
-                  id='text'
-                  onBlur={validateName}
-                  onChange={(event) => setName(event.target.value)}
-                  className={hasNameError ? "border-error" : ""}
-                  placeholder='Digite o nome'
-                />
-                {hasNameError && (
-                  <section className='text-error text-xs font-semibold text-center mt-2'>
-                    Nome inválido!
-                  </section>
-                )}
+        <form onSubmit={handleSubmit(processForm)}>
+          <Card className='w-full mt-10'>
+            <CardHeader className='w-full items-center gap-1'>
+              <CardTitle>Novo Cliente</CardTitle>
+              <CardDescription>Preencha os dados abaixo</CardDescription>
+            </CardHeader>
+            <CardContent className=''>
+              <section className='grid grid-cols-1 md:md:grid-cols-2 lg:grid-cols-3 w-full h-200 gap-4'>
+                <section>
+                  <Label
+                    htmlFor='Name'
+                    className={errors.name?.message ? "text-error" : ""}>
+                    Nome
+                  </Label>
+                  <Input
+                    type='text'
+                    id='text'
+                    className={errors.name?.message ? "border-error" : ""}
+                    placeholder='Digite o nome'
+                    {...register("name")}
+                  />
+                  <p className='text-error text-xs font-semibold text-center mt-2'>
+                    {errors.name?.message}
+                  </p>
+                </section>
+                <section>
+                  <Label
+                    htmlFor='Email'
+                    className={errors.email?.message ? "text-error" : ""}>
+                    E-mail
+                  </Label>
+                  <Input
+                    type='text'
+                    id='text'
+                    className={errors.email?.message ? "border-error" : ""}
+                    placeholder='Digite o e-mail'
+                    {...register("email")}
+                  />
+                  <p className='text-error text-xs font-semibold text-center mt-2'>
+                    {errors.email?.message}
+                  </p>
+                </section>
+                <section>
+                  <Label
+                    htmlFor='Phone'
+                    className={errors.phone?.message ? "text-error" : ""}>
+                    Telefone/Celular
+                  </Label>
+                  <Input
+                    type='text'
+                    id='text'
+                    className={errors.phone?.message ? "border-error" : ""}
+                    placeholder='Digite o telefone/celular'
+                    {...register("phone")}
+                  />
+                  <p className='text-error text-xs font-semibold text-center mt-2'>
+                    {errors.phone?.message}
+                  </p>
+                </section>
+                <section>
+                  <Label
+                    htmlFor='Address'
+                    className={errors.address?.message ? "text-error" : ""}>
+                    Endereço
+                  </Label>
+                  <Input
+                    type='text'
+                    id='text'
+                    className={errors.address?.message ? "border-error" : ""}
+                    placeholder='Digite o endereço'
+                    {...register("address")}
+                  />
+                  <p className='text-error text-xs font-semibold text-center mt-2'>
+                    {errors.address?.message}
+                  </p>
+                </section>
+                <section>
+                  <Label
+                    htmlFor='City'
+                    className={errors.city?.message ? "text-error" : ""}>
+                    Cidade
+                  </Label>
+                  <Input
+                    type='text'
+                    id='text'
+                    className={errors.city?.message ? "border-error" : ""}
+                    placeholder='Digite a cidade'
+                    {...register("city")}
+                  />
+                  <p className='text-error text-xs font-semibold text-center mt-2'>
+                    {errors.city?.message}
+                  </p>
+                </section>
+                <section>
+                  <Label
+                    htmlFor='State'
+                    className={errors.state?.message ? "text-error" : ""}>
+                    Estado
+                  </Label>
+                  <Input
+                    type='text'
+                    id='text'
+                    className={errors.state?.message ? "border-error" : ""}
+                    placeholder='Digite o estado'
+                    {...register("state")}
+                  />
+                  <p className='text-error text-xs font-semibold text-center mt-2'>
+                    {errors.state?.message}
+                  </p>
+                </section>
+                <section>
+                  <Label
+                    htmlFor='PostalCode'
+                    className={errors.postal_code?.message ? "text-error" : ""}>
+                    CEP
+                  </Label>
+                  <Input
+                    type='text'
+                    id='text'
+                    className={
+                      errors.postal_code?.message ? "border-error" : ""
+                    }
+                    placeholder='Digite o CEP'
+                    {...register("postal_code")}
+                  />
+                  <p className='text-error text-xs font-semibold text-center mt-2'>
+                    {errors.postal_code?.message}
+                  </p>
+                </section>
+                <section className='items-center'>
+                  <Label
+                    htmlFor='Country'
+                    className={errors.country?.message ? "text-error" : ""}>
+                    País
+                  </Label>
+                  <Input
+                    type='text'
+                    id='text'
+                    className={errors.country?.message ? "border-error" : ""}
+                    placeholder='Digite o país'
+                    {...register("country")}
+                  />
+                  <p className='text-error text-xs font-semibold text-center mt-2'>
+                    {errors.country?.message}
+                  </p>
+                </section>
               </section>
-              <section>
-                <Label
-                  htmlFor='Email'
-                  className={hasEmailError ? "text-error" : ""}>
-                  E-mail
-                </Label>
-                <Input
-                  type='text'
-                  id='text'
-                  onBlur={validateEmail}
-                  onChange={(event) => setEmail(event.target.value)}
-                  className={hasEmailError ? "border-error" : ""}
-                  placeholder='Digite o e-mail'
-                />
-                {hasEmailError && (
-                  <section className='text-error text-xs font-semibold text-center mt-2'>
-                    E-mail inválido!
-                  </section>
+            </CardContent>
+            <CardFooter className='flex justify-end'>
+              <Button
+                disabled={hasAnyError() ? true : loading}
+                className={
+                  hasAnyError()
+                    ? "!bg-error w-40"
+                    : loading
+                    ? "!w-content"
+                    : "!w-40"
+                }
+                type='submit'>
+                {hasAnyError() ? (
+                  <ShieldAlert />
+                ) : loading ? (
+                  <Spinner />
+                ) : (
+                  "Adicionar Cliente"
                 )}
-              </section>
-              <section>
-                <Label
-                  htmlFor='Phone'
-                  className={hasPhoneError ? "text-error" : ""}>
-                  Telefone/Celular
-                </Label>
-                <Input
-                  type='text'
-                  id='text'
-                  onBlur={validatePhone}
-                  onChange={(event) => setPhone(event.target.value)}
-                  className={hasPhoneError ? "border-error" : ""}
-                  placeholder='Digite o telefone/celular'
-                />
-                {hasPhoneError && (
-                  <section className='text-error text-xs font-semibold text-center mt-2'>
-                    Telefone/Celular inválido!
-                  </section>
-                )}
-              </section>
-              <section>
-                <Label
-                  htmlFor='Address'
-                  className={hasAddressError ? "text-error" : ""}>
-                  Endereço
-                </Label>
-                <Input
-                  type='text'
-                  id='text'
-                  onBlur={validateAddress}
-                  onChange={(event) => setAddress(event.target.value)}
-                  className={hasAddressError ? "border-error" : ""}
-                  placeholder='Digite o endereço'
-                />
-                {hasAddressError && (
-                  <section className='text-error text-xs font-semibold text-center mt-2'>
-                    Endereço inválido!
-                  </section>
-                )}
-              </section>
-              <section>
-                <Label
-                  htmlFor='City'
-                  className={hasCityError ? "text-error" : ""}>
-                  Cidade
-                </Label>
-                <Input
-                  type='text'
-                  id='text'
-                  onBlur={validateCity}
-                  onChange={(event) => setCity(event.target.value)}
-                  className={hasCityError ? "border-error" : ""}
-                  placeholder='Digite a cidade'
-                />
-                {hasCityError && (
-                  <section className='text-error text-xs font-semibold text-center mt-2'>
-                    Cidade inválida!
-                  </section>
-                )}
-              </section>
-              <section>
-                <Label
-                  htmlFor='State'
-                  className={hasStateError ? "text-error" : ""}>
-                  Estado
-                </Label>
-                <Input
-                  type='text'
-                  id='text'
-                  onBlur={validateState}
-                  onChange={(event) => setState(event.target.value)}
-                  className={hasStateError ? "border-error" : ""}
-                  placeholder='Digite o estado'
-                />
-                {hasStateError && (
-                  <section className='text-error text-xs font-semibold text-center mt-2'>
-                    Estado inválido!
-                  </section>
-                )}
-              </section>
-              <section>
-                <Label
-                  htmlFor='PostalCode'
-                  className={hasPostalCodeError ? "text-error" : ""}>
-                  CEP
-                </Label>
-                <Input
-                  type='text'
-                  id='text'
-                  onBlur={validatePostalCode}
-                  onChange={(event) => setPostalCode(event.target.value)}
-                  className={hasPostalCodeError ? "border-error" : ""}
-                  placeholder='Digite o CEP'
-                />
-                {hasPostalCodeError && (
-                  <section className='text-error text-xs font-semibold text-center mt-2'>
-                    CEP inválido!
-                  </section>
-                )}
-              </section>
-              <section>
-                <Label
-                  htmlFor='Country'
-                  className={hasCountryError ? "text-error" : ""}>
-                  País
-                </Label>
-                <Input
-                  type='text'
-                  id='text'
-                  onBlur={validateCountry}
-                  onChange={(event) => setCountry(event.target.value)}
-                  className={hasCountryError ? "border-error" : ""}
-                  placeholder='Digite o país'
-                />
-                {hasCountryError && (
-                  <section className='text-error text-xs font-semibold text-center mt-2'>
-                    País inválido!
-                  </section>
-                )}
-              </section>
-            </section>
-          </CardContent>
-          <CardFooter className='flex justify-end'>
-            <Button
-              className={hasAnyError() ? "!bg-error w-40" : "!w-40"}
-              onClick={handleSubmit}>
-              {hasAnyError() ? <ShieldAlert /> : "Adicionar Cliente"}
-            </Button>
-          </CardFooter>
-        </Card>
+              </Button>
+            </CardFooter>
+          </Card>
+        </form>
       </section>
+      <ToastContainer />
     </main>
   );
 }
