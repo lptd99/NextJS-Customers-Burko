@@ -136,172 +136,178 @@ export default function CustomersAdd() {
         </Breadcrumb>
       </section>
       <section className='flex flex-col items-center pb-14'>
-        <Card className='h-content w-full sm:w-[30rem] p-4'>
+        <Card className='w-full mt-10'>
           <CardHeader className='w-full items-center gap-1'>
             <CardTitle>Novo Cliente</CardTitle>
             <CardDescription>Preencha os dados abaixo</CardDescription>
           </CardHeader>
-          <CardContent className='grid w-full items-center gap-4'>
-            <section className='grid w-full items-center gap-1'>
-              <Label
-                htmlFor='Name'
-                className={hasNameError ? "text-error" : ""}>
-                Nome
-              </Label>
-              <Input
-                type='text'
-                id='text'
-                onBlur={validateName}
-                onChange={(event) => setName(event.target.value)}
-                className={hasNameError ? "border-error" : ""}
-              />
-              {hasNameError && (
-                <section className='text-error text-xs font-semibold text-center mt-2'>
-                  Nome inválido!
-                </section>
-              )}
-            </section>
-            <section className='grid w-full items-center gap-1'>
-              <Label
-                htmlFor='Email'
-                className={hasEmailError ? "text-error" : ""}>
-                E-mail
-              </Label>
-              <Input
-                type='text'
-                id='text'
-                onBlur={validateEmail}
-                onChange={(event) => setEmail(event.target.value)}
-                className={hasEmailError ? "border-error" : ""}
-              />
-              {hasEmailError && (
-                <section className='text-error text-xs font-semibold text-center mt-2'>
-                  E-mail inválido!
-                </section>
-              )}
-            </section>
-            <section className='grid w-full items-center gap-1'>
-              <Label
-                htmlFor='Phone'
-                className={hasPhoneError ? "text-error" : ""}>
-                Telefone/Celular
-              </Label>
-              <Input
-                type='text'
-                id='text'
-                onBlur={validatePhone}
-                onChange={(event) => setPhone(event.target.value)}
-                className={hasPhoneError ? "border-error" : ""}
-              />
-              {hasPhoneError && (
-                <section className='text-error text-xs font-semibold text-center mt-2'>
-                  Telefone/Celular inválido!
-                </section>
-              )}
-            </section>
-            <section className='grid w-full items-center gap-1'>
-              <Label
-                htmlFor='Address'
-                className={hasAddressError ? "text-error" : ""}>
-                Endereço
-              </Label>
-              <Input
-                type='text'
-                id='text'
-                onBlur={validateAddress}
-                onChange={(event) => setAddress(event.target.value)}
-                className={hasAddressError ? "border-error" : ""}
-              />
-              {hasAddressError && (
-                <section className='text-error text-xs font-semibold text-center mt-2'>
-                  Endereço inválido!
-                </section>
-              )}
-            </section>
-
-            <section className='grid w-full items-center gap-1'>
-              <Label
-                htmlFor='City'
-                className={hasCityError ? "text-error" : ""}>
-                Cidade
-              </Label>
-              <Input
-                type='text'
-                id='text'
-                onBlur={validateCity}
-                onChange={(event) => setCity(event.target.value)}
-                className={hasCityError ? "border-error" : ""}
-              />
-              {hasCityError && (
-                <section className='text-error text-xs font-semibold text-center mt-2'>
-                  Cidade inválida!
-                </section>
-              )}
-            </section>
-
-            <section className='grid w-full items-center gap-1'>
-              <Label
-                htmlFor='State'
-                className={hasStateError ? "text-error" : ""}>
-                Estado
-              </Label>
-              <Input
-                type='text'
-                id='text'
-                onBlur={validateState}
-                onChange={(event) => setState(event.target.value)}
-                className={hasStateError ? "border-error" : ""}
-              />
-              {hasStateError && (
-                <section className='text-error text-xs font-semibold text-center mt-2'>
-                  Estado inválido!
-                </section>
-              )}
-            </section>
-
-            <section className='grid w-full items-center gap-1'>
-              <Label
-                htmlFor='PostalCode'
-                className={hasPostalCodeError ? "text-error" : ""}>
-                CEP
-              </Label>
-              <Input
-                type='text'
-                id='text'
-                onBlur={validatePostalCode}
-                onChange={(event) => setPostalCode(event.target.value)}
-                className={hasPostalCodeError ? "border-error" : ""}
-              />
-              {hasPostalCodeError && (
-                <section className='text-error text-xs font-semibold text-center mt-2'>
-                  CEP inválido!
-                </section>
-              )}
-            </section>
-
-            <section className='grid w-full items-center gap-1'>
-              <Label
-                htmlFor='Country'
-                className={hasCountryError ? "text-error" : ""}>
-                País
-              </Label>
-              <Input
-                type='text'
-                id='text'
-                onBlur={validateCountry}
-                onChange={(event) => setCountry(event.target.value)}
-                className={hasCountryError ? "border-error" : ""}
-              />
-              {hasCountryError && (
-                <section className='text-error text-xs font-semibold text-center mt-2'>
-                  País inválido!
-                </section>
-              )}
+          <CardContent className=''>
+            <section className='grid grid-cols-1 md:md:grid-cols-2 lg:grid-cols-3 w-full items-center gap-4'>
+              <section>
+                <Label
+                  htmlFor='Name'
+                  className={hasNameError ? "text-error" : ""}>
+                  Nome
+                </Label>
+                <Input
+                  type='text'
+                  id='text'
+                  onBlur={validateName}
+                  onChange={(event) => setName(event.target.value)}
+                  className={hasNameError ? "border-error" : ""}
+                  placeholder='Digite o nome'
+                />
+                {hasNameError && (
+                  <section className='text-error text-xs font-semibold text-center mt-2'>
+                    Nome inválido!
+                  </section>
+                )}
+              </section>
+              <section>
+                <Label
+                  htmlFor='Email'
+                  className={hasEmailError ? "text-error" : ""}>
+                  E-mail
+                </Label>
+                <Input
+                  type='text'
+                  id='text'
+                  onBlur={validateEmail}
+                  onChange={(event) => setEmail(event.target.value)}
+                  className={hasEmailError ? "border-error" : ""}
+                  placeholder='Digite o e-mail'
+                />
+                {hasEmailError && (
+                  <section className='text-error text-xs font-semibold text-center mt-2'>
+                    E-mail inválido!
+                  </section>
+                )}
+              </section>
+              <section>
+                <Label
+                  htmlFor='Phone'
+                  className={hasPhoneError ? "text-error" : ""}>
+                  Telefone/Celular
+                </Label>
+                <Input
+                  type='text'
+                  id='text'
+                  onBlur={validatePhone}
+                  onChange={(event) => setPhone(event.target.value)}
+                  className={hasPhoneError ? "border-error" : ""}
+                  placeholder='Digite o telefone/celular'
+                />
+                {hasPhoneError && (
+                  <section className='text-error text-xs font-semibold text-center mt-2'>
+                    Telefone/Celular inválido!
+                  </section>
+                )}
+              </section>
+              <section>
+                <Label
+                  htmlFor='Address'
+                  className={hasAddressError ? "text-error" : ""}>
+                  Endereço
+                </Label>
+                <Input
+                  type='text'
+                  id='text'
+                  onBlur={validateAddress}
+                  onChange={(event) => setAddress(event.target.value)}
+                  className={hasAddressError ? "border-error" : ""}
+                  placeholder='Digite o endereço'
+                />
+                {hasAddressError && (
+                  <section className='text-error text-xs font-semibold text-center mt-2'>
+                    Endereço inválido!
+                  </section>
+                )}
+              </section>
+              <section>
+                <Label
+                  htmlFor='City'
+                  className={hasCityError ? "text-error" : ""}>
+                  Cidade
+                </Label>
+                <Input
+                  type='text'
+                  id='text'
+                  onBlur={validateCity}
+                  onChange={(event) => setCity(event.target.value)}
+                  className={hasCityError ? "border-error" : ""}
+                  placeholder='Digite a cidade'
+                />
+                {hasCityError && (
+                  <section className='text-error text-xs font-semibold text-center mt-2'>
+                    Cidade inválida!
+                  </section>
+                )}
+              </section>
+              <section>
+                <Label
+                  htmlFor='State'
+                  className={hasStateError ? "text-error" : ""}>
+                  Estado
+                </Label>
+                <Input
+                  type='text'
+                  id='text'
+                  onBlur={validateState}
+                  onChange={(event) => setState(event.target.value)}
+                  className={hasStateError ? "border-error" : ""}
+                  placeholder='Digite o estado'
+                />
+                {hasStateError && (
+                  <section className='text-error text-xs font-semibold text-center mt-2'>
+                    Estado inválido!
+                  </section>
+                )}
+              </section>
+              <section>
+                <Label
+                  htmlFor='PostalCode'
+                  className={hasPostalCodeError ? "text-error" : ""}>
+                  CEP
+                </Label>
+                <Input
+                  type='text'
+                  id='text'
+                  onBlur={validatePostalCode}
+                  onChange={(event) => setPostalCode(event.target.value)}
+                  className={hasPostalCodeError ? "border-error" : ""}
+                  placeholder='Digite o CEP'
+                />
+                {hasPostalCodeError && (
+                  <section className='text-error text-xs font-semibold text-center mt-2'>
+                    CEP inválido!
+                  </section>
+                )}
+              </section>
+              <section>
+                <Label
+                  htmlFor='Country'
+                  className={hasCountryError ? "text-error" : ""}>
+                  País
+                </Label>
+                <Input
+                  type='text'
+                  id='text'
+                  onBlur={validateCountry}
+                  onChange={(event) => setCountry(event.target.value)}
+                  className={hasCountryError ? "border-error" : ""}
+                  placeholder='Digite o país'
+                />
+                {hasCountryError && (
+                  <section className='text-error text-xs font-semibold text-center mt-2'>
+                    País inválido!
+                  </section>
+                )}
+              </section>
             </section>
           </CardContent>
-          <CardFooter>
+          <CardFooter className='flex justify-end'>
             <Button
-              className={hasAnyError() ? "!bg-error w-full" : "!w-full"}
+              className={hasAnyError() ? "!bg-error w-40" : "!w-40"}
               onClick={handleSubmit}>
               {hasAnyError() ? <ShieldAlert /> : "Adicionar Cliente"}
             </Button>
