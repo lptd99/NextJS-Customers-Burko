@@ -1,0 +1,21 @@
+Technologies used:
+  Typescript
+  Next js
+  React js
+  Tailwind CSS
+  Lucide React
+  Axios
+  ShadCN
+
+VSCode Extensions used:
+  ESLint
+  Prettier
+  PostCSS Language Support
+  Error Lens
+  GitLens - Git Supercharged
+  Thunder Client
+
+Useful commands:
+  npm run dev
+  npx json-server ./db/db.json -p 4000
+  npx shadcn-ui@latest add ?
