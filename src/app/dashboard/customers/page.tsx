@@ -31,18 +31,6 @@ import { Pencil, Plus, Trash2 } from "lucide-react";
 import Link from "next/link";
 import { useEffect, useState } from "react";
 
-interface ICustomer {
-  id: number;
-  name: string;
-  city: string;
-  email: string;
-  phone: string;
-  address: string;
-  state: string;
-  postal_code: string;
-  country?: string;
-}
-
 export default function Customers() {
   const [customers, setCustomers] = useState<ICustomer[] | null>([]);
   const [loadingCustomers, setLoadingCustomers] = useState<boolean>(false);
