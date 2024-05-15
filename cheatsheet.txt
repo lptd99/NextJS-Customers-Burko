@@ -19,5 +19,6 @@ VSCode Extensions used:
 
 Useful commands:
   npm run dev
+  npm run api
   npx json-server ./db/db.json -p 4000
   npx shadcn-ui@latest add ?
