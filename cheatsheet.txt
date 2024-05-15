@@ -6,6 +6,7 @@ Technologies used:
   Lucide React
   Axios
   ShadCN
+  React Hook Form
 
 VSCode Extensions used:
   ESLint
