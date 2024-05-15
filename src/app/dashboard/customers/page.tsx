@@ -39,7 +39,7 @@ export default function Customers() {
   async function fetchfromDB(route: string) {
     setLoadingCustomers(true);
     try {
-      await new Promise((resolve) => setTimeout(resolve, 4000));
+      await new Promise((resolve) => setTimeout(resolve, 2000));
       const response = await axios.get(`http://localhost:4000/${route}`);
       if (route === "customers") {
         setLoadingCustomers(false);
@@ -75,13 +75,16 @@ export default function Customers() {
         <section className='flex flex-row justify-between mt-5'>
           <Button
             disabled={loadingCustomers}
-            className=''
+            className='text-lg'
+            variant='outline'
             onClick={() => fetchfromDB("customers")}>
             Recarregar Clientes
           </Button>
           <Link href='/dashboard/customers/add'>
-            <Button className='text-2xl font-semibold'>
-              <Plus></Plus>
+            <Button
+              variant='outline'
+              className='text-2xl font-semibold'>
+              <Plus className='text-lg'></Plus>
             </Button>
           </Link>
         </section>
