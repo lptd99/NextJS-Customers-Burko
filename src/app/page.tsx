@@ -32,15 +32,11 @@ export default function Login() {
   }
 
   function validateEmail() {
-    if (email.length === 0) {
-      setHasEmailError(true);
-    } else setHasEmailError(false);
+    setHasEmailError(email.length === 0);
   }
 
   function validatePassword() {
-    if (password.length === 0) {
-      setHasPasswordError(true);
-    } else setHasPasswordError(false);
+    setHasPasswordError(password.length === 0);
   }
 
   function validateForm() {
