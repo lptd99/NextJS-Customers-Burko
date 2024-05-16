@@ -148,7 +148,7 @@ export default function Customers() {
                           </Button>
                           <Button
                             className='h-content w-content hover:bg-red-500 bg-error'
-                            onClick={() => handleOpenDialog(customer.id)}>
+                            onClick={() => handleDeleteClick(customer.id)}>
                             <Trash2 />
                           </Button>
                         </TableCell>
@@ -220,7 +220,7 @@ export default function Customers() {
                 </Button>
                 <Button
                   disabled={isDeleting}
-                  onClick={() => handleCustomerDelete(customerToDelete)}
+                  onClick={() => handleDialogDeleteConfirm(customerToDelete)}
                   className='bg-error hover:bg-red-500 w-40'>
                   {isDeleting ? (
                     <Spinner />
