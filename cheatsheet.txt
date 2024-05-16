@@ -8,6 +8,7 @@ Technologies used:
   ShadCN
   React Hook Form
   React Toastify
+  HeadlessUI
 
 VSCode Extensions used:
   ESLint
