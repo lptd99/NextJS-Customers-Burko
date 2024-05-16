@@ -22,6 +22,12 @@ VSCode Extensions used:
   GitLens - Git Supercharged
   Thunder Client
 
+Browser Extensions used:
+  Debug CSS
+  Mobile simulator - responsive testing tool
+  React Developer Tools
+  VisBug
+
 Useful commands:
   npm run dev
   npm run api
