@@ -14,8 +14,8 @@ export default function RootLayout({
   const [render, setRender] = useState<boolean>(false);
   const router = useRouter();
   function handleLogout() {
-    router.push("/");
     localStorage.removeItem("customersApp_token");
+    router.push("/");
   }
 
   useEffect(() => {
