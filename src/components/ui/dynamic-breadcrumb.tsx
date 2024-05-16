@@ -20,7 +20,6 @@ export default function DynamicBreadcrumb({
 }: IDynamicBreadcrumbProps) {
   const router = useRouter();
   return (
-    <section className='mb-2 items-left ml-4'>
       <Breadcrumb>
         <BreadcrumbList>
           {texts.map((text, index) => (
@@ -46,6 +45,5 @@ export default function DynamicBreadcrumb({
           ))}
         </BreadcrumbList>
       </Breadcrumb>
-    </section>
   );
 }
