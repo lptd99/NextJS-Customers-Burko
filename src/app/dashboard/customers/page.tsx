@@ -63,7 +63,7 @@ export default function Customers() {
     fetchCustomers();
   }, []);
 
-  async function handleCustomerDelete(id: number) {
+  async function handleDialogDeleteConfirm(id: number) {
     setIsDeleting(true);
     try {
       await axios.delete(`http://localhost:4000/customers/${id}`);
@@ -77,7 +77,7 @@ export default function Customers() {
     setIsDeleting(false);
   }
 
-  function handleOpenDialog(id: number) {
+  function handleDeleteClick(id: number) {
     setDialogIsOpen(true);
     setCustomerToDelete(id);
   }
