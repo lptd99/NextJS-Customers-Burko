@@ -26,6 +26,8 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
+import { ICustomer } from "@/interfaces";
+import { useStore } from "@/stores";
 import {
   Description,
   Dialog,
@@ -48,6 +50,7 @@ export default function Customers() {
   const [customerToDelete, setCustomerToDelete] = useState<number>(-1);
   const router = useRouter();
   const [isDeleting, setIsDeleting] = useState<boolean>(false);
+  const store = useStore();
 
   async function fetchCustomers() {
     setLoadingCustomers(true);
