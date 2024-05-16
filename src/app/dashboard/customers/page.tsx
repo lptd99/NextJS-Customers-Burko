@@ -36,6 +36,7 @@ import {
 import axios from "axios";
 import { MoveLeft, Pencil, Plus, RotateCw, Trash2 } from "lucide-react";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
@@ -45,6 +46,7 @@ export default function Customers() {
   const [loadingCustomers, setLoadingCustomers] = useState<boolean>(false);
   const [dialogIsOpen, setDialogIsOpen] = useState<boolean>(false);
   const [customerToDelete, setCustomerToDelete] = useState<number>(-1);
+  const router = useRouter();
   const [isDeleting, setIsDeleting] = useState<boolean>(false);
 
   async function fetchCustomers() {
