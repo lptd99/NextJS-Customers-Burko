@@ -27,6 +27,7 @@ Browser Extensions used:
   Mobile simulator - responsive testing tool
   React Developer Tools
   VisBug
+  Redux DevTools
 
 Useful commands:
   npm run dev
