@@ -59,7 +59,9 @@ export default function Login() {
       //1   if (validateForm()) {
       //2   if (!hasAnyError()) {
       if (email && password) {
-        const response = await fetch("http://localhost:4000/login", options);
+        const response = await fetch(
+          "http://localhost:4000/login" /*, options*/
+        );
         const data = await response.json();
         if (data.token && !hasAnyError()) {
           console.log(data);
