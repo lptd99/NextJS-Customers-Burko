@@ -72,14 +72,12 @@ export default function Customers() {
           <Button
             disabled={loadingCustomers}
             className='text-lg'
-            variant='outline'
             onClick={() => fetchCustomers()}>
+            <RotateCw className='mr-2' />
             Recarregar Clientes
           </Button>
           <Link href='/dashboard/customers/add'>
-            <Button
-              variant='outline'
-              className='text-2xl font-semibold'>
+            <Button className='text-2xl font-semibold'>
               <Plus className='text-lg'></Plus>
             </Button>
           </Link>
@@ -96,11 +94,11 @@ export default function Customers() {
             <section className='mt-6 overflow-x-auto'>
               <Table className='w-full min-w-[800px]'>
                 <TableHeader>
-                  <TableRow>
-                    <TableHead className='w-[100px]'>#</TableHead>
-                    <TableHead>Nome</TableHead>
-                    <TableHead>Cidade/UF</TableHead>
-                    <TableHead className='w-[4rem] text-center'>
+                  <TableRow className='items-center'>
+                    <TableHead className='w-[100px] font-bold'>#</TableHead>
+                    <TableHead className='font-bold'>Nome</TableHead>
+                    <TableHead className='font-bold'>Cidade/UF</TableHead>
+                    <TableHead className='w-[4rem] font-bold text-center'>
                       Ações
                     </TableHead>
                   </TableRow>
@@ -109,15 +107,13 @@ export default function Customers() {
                   {customers ? (
                     customers.map((customer) => (
                       <TableRow key={customer.id}>
-                        <TableCell className='text-xl'>{customer.id}</TableCell>
-                        <TableCell className='text-xl'>
-                          {customer.name}
-                        </TableCell>
-                        <TableCell className='text-xl'>
-                          {customer.city}
-                        </TableCell>
+                        <TableCell>{customer.id}</TableCell>
+                        <TableCell>{customer.name}</TableCell>
+                        <TableCell>{customer.city}</TableCell>
                         <TableCell className='w-content flex flex-col justify-center gap-[.5rem]'>
-                          <Button className='h-content w-content'>
+                          <Button
+                            variant='outline'
+                            className='h-content w-content'>
                             <Pencil />
                           </Button>
                           <Button className='h-content w-content bg-error'>
