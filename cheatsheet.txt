@@ -10,6 +10,7 @@ Technologies used:
   React Toastify
   HeadlessUI
   NPM JSON Server
+  Zustand
 
 VSCode Extensions used:
   ESLint
