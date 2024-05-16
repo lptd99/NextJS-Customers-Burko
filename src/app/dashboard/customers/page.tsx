@@ -50,7 +50,7 @@ export default function Customers() {
   async function fetchCustomers() {
     setLoadingCustomers(true);
     try {
-      await new Promise((resolve) => setTimeout(resolve, 2000));
+      // await new Promise((resolve) => setTimeout(resolve, 1000));
       const response = await axios.get(`http://localhost:4000/customers`);
       setLoadingCustomers(false);
       setCustomers(response.data);

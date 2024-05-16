@@ -51,7 +51,7 @@ export default function CustomersAdd() {
   const processForm: SubmitHandler<Inputs> = async (data) => {
     setLoading(true);
     try {
-      await new Promise((resolve) => setTimeout(resolve, 2000));
+      // await new Promise((resolve) => setTimeout(resolve, 1000));
       const response = await axios.post(
         "http://localhost:4000/customers",
         data
