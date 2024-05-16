@@ -36,24 +36,20 @@ export default function Customers() {
   const [loadingCustomers, setLoadingCustomers] = useState<boolean>(false);
   const tableFont = "small";
 
-  async function fetchfromDB(route: string) {
+  async function fetchCustomers() {
     setLoadingCustomers(true);
     try {
       await new Promise((resolve) => setTimeout(resolve, 2000));
-      const response = await axios.get(`http://localhost:4000/${route}`);
-      if (route === "customers") {
-        setLoadingCustomers(false);
-        setCustomers(response.data);
-      }
-      if (route === "login") {
-      }
+      const response = await axios.get(`http://localhost:4000/customers`);
+      setLoadingCustomers(false);
+      setCustomers(response.data);
     } catch (error) {
       console.log("Error fetching customers.");
     }
   }
 
   useEffect(() => {
-    fetchfromDB("customers");
+    fetchCustomers();
   }, []);
 
   return (
@@ -77,7 +73,7 @@ export default function Customers() {
             disabled={loadingCustomers}
             className='text-lg'
             variant='outline'
-            onClick={() => fetchfromDB("customers")}>
+            onClick={() => fetchCustomers()}>
             Recarregar Clientes
           </Button>
           <Link href='/dashboard/customers/add'>
