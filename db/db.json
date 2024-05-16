@@ -362,6 +362,17 @@
       "state": "3123123",
       "postal_code": "131231",
       "country": "312313"
+    },
+    {
+      "id": "029e",
+      "name": "43242324234",
+      "email": "432432432@dfdsf.cccc",
+      "phone": "432432432423",
+      "address": "4324324",
+      "city": "324324324",
+      "state": "423432432",
+      "postal_code": "43242432",
+      "country": "43243242"
     }
   ],
   "login": {
@@ -370,9 +381,7 @@
       "id": 123,
       "username": "example_user",
       "email": "user@example.com",
-      "roles": [
-        "user"
-      ]
+      "roles": ["user"]
     },
     "expires_in": 3600
   }
