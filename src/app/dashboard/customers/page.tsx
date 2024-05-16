@@ -26,15 +26,26 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
+import {
+  Description,
+  Dialog,
+  DialogPanel,
+  DialogTitle,
+  Transition,
+} from "@headlessui/react";
 import axios from "axios";
 import { MoveLeft, Pencil, Plus, RotateCw, Trash2 } from "lucide-react";
 import Link from "next/link";
 import { useEffect, useState } from "react";
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 export default function Customers() {
   const [customers, setCustomers] = useState<ICustomer[] | null>([]);
   const [loadingCustomers, setLoadingCustomers] = useState<boolean>(false);
-  const tableFont = "small";
+  const [dialogIsOpen, setDialogIsOpen] = useState<boolean>(false);
+  const [customerToDelete, setCustomerToDelete] = useState<number>(-1);
+  const [isDeleting, setIsDeleting] = useState<boolean>(false);
 
   async function fetchCustomers() {
     setLoadingCustomers(true);
@@ -51,6 +62,25 @@ export default function Customers() {
   useEffect(() => {
     fetchCustomers();
   }, []);
+
+  async function handleCustomerDelete(id: number) {
+    setIsDeleting(true);
+    try {
+      await axios.delete(`http://localhost:4000/customers/${id}`);
+      await fetchCustomers();
+      toast.success("Cliente excluído com sucesso.");
+    } catch (error) {
+      console.log(error);
+      toast.error("Falha ao excluir Cliente.");
+    }
+    setDialogIsOpen(false);
+    setIsDeleting(false);
+  }
+
+  function handleOpenDialog(id: number) {
+    setDialogIsOpen(true);
+    setCustomerToDelete(id);
+  }
 
   return (
     <main className='flex min-h-screen flex-col p-8 gap-4'>
@@ -116,7 +146,9 @@ export default function Customers() {
                             className='h-content w-content'>
                             <Pencil />
                           </Button>
-                          <Button className='h-content w-content bg-error'>
+                          <Button
+                            className='h-content w-content hover:bg-red-500 bg-error'
+                            onClick={() => handleOpenDialog(customer.id)}>
                             <Trash2 />
                           </Button>
                         </TableCell>
@@ -155,6 +187,55 @@ export default function Customers() {
           </>
         )}
       </section>
+
+      <Transition
+        show={dialogIsOpen}
+        enter='duration-500 ease-out'
+        enterFrom='opacity-0'
+        enterTo='opacity-100'
+        leave='duration-500 ease-out'
+        leaveFrom='opacity-100'
+        leaveTo='opacity-0'>
+        <Dialog
+          open={dialogIsOpen}
+          onClose={() => setDialogIsOpen(false)}
+          className='relative z-50'>
+          <div className='fixed inset-0 flex w-screen items-center justify-center p-4'>
+            <DialogPanel className='max-w-lg space-y-4 border bg-white p-12'>
+              <DialogTitle className='font-bold text-2xl'>
+                Excluir registro?
+              </DialogTitle>
+              <Description className='font-semibold'>
+                Esta ação não pode ser desfeita.
+              </Description>
+              <p>
+                Você tem certeza que deseja excluir este registro do banco de
+                dados?
+              </p>
+              <div className='flex gap-4 justify-between'>
+                <Button
+                  disabled={isDeleting}
+                  onClick={() => setDialogIsOpen(false)}>
+                  <MoveLeft className='mr-2' /> Cancelar
+                </Button>
+                <Button
+                  disabled={isDeleting}
+                  onClick={() => handleCustomerDelete(customerToDelete)}
+                  className='bg-error hover:bg-red-500 w-40'>
+                  {isDeleting ? (
+                    <Spinner />
+                  ) : (
+                    <>
+                      Tenho certeza! <Trash2 className='ml-2' />
+                    </>
+                  )}
+                </Button>
+              </div>
+            </DialogPanel>
+          </div>
+        </Dialog>
+      </Transition>
+      <ToastContainer />
     </main>
   );
 }
