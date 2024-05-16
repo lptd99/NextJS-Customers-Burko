@@ -13,17 +13,51 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { ShieldAlert } from "lucide-react";
 import Image from "next/image";
-import { useState } from "react";
+import { useRouter } from "next/navigation";
+import { useEffect, useState } from "react";
 
 export default function Login() {
   const [email, setEmail] = useState<string>("");
   const [password, setPassword] = useState<string>("");
   const [hasEmailError, setHasEmailError] = useState<boolean>(false);
   const [hasPasswordError, setHasPasswordError] = useState<boolean>(false);
+  const router = useRouter();
 
-  function handleSubmit() {
-    if (validateForm()) {
-      console.log(email + " = email, " + password + " = password");
+  useEffect(() => {
+    setHasEmailError(false);
+    setHasPasswordError(false);
+  }, [email, password]);
+
+  // function handleSubmit2() {
+  //   try {
+  //     if (validateForm()) router.push("/dashboard");
+  //     else console.log("Erros!");
+  //   } catch (error) {
+  //     console.log(error);
+  //   }
+  // }
+
+  async function handleSubmit() {
+    //2 validateForm()
+    try {
+      //1   if (validateForm()) {
+      //2   if (!hasAnyError()) {
+      if (email && password) {
+        const response = await fetch("http://localhost:4000/login");
+        const data = await response.json();
+        if (data.token && !hasAnyError()) {
+          console.log(data);
+          router.push("/dashboard");
+          localStorage.setItem(
+            "customersApp_token",
+            JSON.stringify(data.token)
+          );
+        }
+      } else {
+        validateForm();
+      }
+    } catch (error) {
+      console.log(error);
     }
   }
 
