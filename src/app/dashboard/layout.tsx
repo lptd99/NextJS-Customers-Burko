@@ -67,7 +67,7 @@ export default function RootLayout({
               id='LOGOUT'
               className='hidden items-center lg:flex'>
               <Button onClick={handleLogout}>
-                <LogOut />
+                <LogOut className='mr-1' />
                 Sair
               </Button>
             </section>
