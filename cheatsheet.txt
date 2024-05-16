@@ -1,3 +1,5 @@
+All Extensions and Technologies are the latest stable version available, unless otherwise stated. 
+
 Technologies used:
   Typescript
   Next js
