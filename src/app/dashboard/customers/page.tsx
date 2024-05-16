@@ -87,6 +87,11 @@ export default function Customers() {
     setCustomerToDelete(id);
   }
 
+  function handleEditClick(customer: ICustomer) {
+    store.setCustomerToUpdate(customer);
+    router.push("/dashboard/customers/edit");
+  }
+
   return (
     <main className='flex min-h-screen flex-col p-8 gap-4'>
       <section className='mb-2 items-left ml-4'>
@@ -148,7 +153,8 @@ export default function Customers() {
                         <TableCell className='w-content flex flex-col justify-center gap-[.5rem]'>
                           <Button
                             variant='outline'
-                            className='h-content w-content'>
+                            className='h-content w-content'
+                            onClick={() => handleEditClick(customer)}>
                             <Pencil />
                           </Button>
                           <Button
