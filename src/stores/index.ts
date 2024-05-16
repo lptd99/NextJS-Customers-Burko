@@ -5,7 +5,7 @@ type Store = {
   setCustomerName: () => void;
 };
 
-const useStore = create<Store>()((set) => ({
+export const useStore = create<Store>()((set) => ({
   customerName: "",
   setCustomerName: () => set((state) => ({ customerName: state.customerName })),
 }));
