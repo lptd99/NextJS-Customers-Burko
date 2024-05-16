@@ -27,7 +27,7 @@ import {
   TableRow,
 } from "@/components/ui/table";
 import axios from "axios";
-import { Pencil, Plus, Trash2 } from "lucide-react";
+import { MoveLeft, Pencil, Plus, RotateCw, Trash2 } from "lucide-react";
 import Link from "next/link";
 import { useEffect, useState } from "react";
 
