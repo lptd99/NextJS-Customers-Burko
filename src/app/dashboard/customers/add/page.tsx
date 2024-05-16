@@ -20,6 +20,7 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Spinner } from "@/components/ui/spinner";
 import { CustomerZodSchema } from "@/schemas/CustomerZodSchema";
+import { useStore } from "@/stores";
 import { zodResolver } from "@hookform/resolvers/zod";
 import axios from "axios";
 import { ShieldAlert } from "lucide-react";
@@ -30,6 +31,7 @@ import "react-toastify/dist/ReactToastify.css";
 import { z } from "zod";
 
 export default function CustomersAdd() {
+  const { customerName, setCustomerName } = useStore();
   const [loading, setLoading] = useState<boolean>(false);
   type Inputs = z.infer<typeof CustomerZodSchema>;
 
