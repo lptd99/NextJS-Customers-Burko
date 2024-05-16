@@ -9,6 +9,7 @@ Technologies used:
   React Hook Form
   React Toastify
   HeadlessUI
+  NPM JSON Server
 
 VSCode Extensions used:
   ESLint
