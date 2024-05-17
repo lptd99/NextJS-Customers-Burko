@@ -1,12 +1,5 @@
 "use client";
 
-import {
-  Breadcrumb,
-  BreadcrumbItem,
-  BreadcrumbLink,
-  BreadcrumbList,
-  BreadcrumbSeparator,
-} from "@/components/ui/breadcrumb";
 import { Button } from "@/components/ui/button";
 import {
   Card,
@@ -16,6 +9,7 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
+import DynamicBreadcrumb from "@/components/ui/dynamic-breadcrumb";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Spinner } from "@/components/ui/spinner";
@@ -76,25 +70,11 @@ export default function CustomersAdd() {
   return (
     <main className='flex min-h-screen flex-col p-8 gap-4'>
       <section className='mb-2 items-left ml-4'>
-        <Breadcrumb>
-          <BreadcrumbList>
-            <BreadcrumbItem>
-              <BreadcrumbLink href='/dashboard'>Dashboard</BreadcrumbLink>
-            </BreadcrumbItem>
-            <BreadcrumbSeparator />
-            <BreadcrumbItem>
-              <BreadcrumbLink href='/dashboard/customers'>
-                Lista de Clientes
-              </BreadcrumbLink>
-            </BreadcrumbItem>
-            <BreadcrumbSeparator />
-            <BreadcrumbItem>
-              <BreadcrumbLink href='/dashboard/customers/add'>
-                Adicionar Cliente
-              </BreadcrumbLink>
-            </BreadcrumbItem>
-          </BreadcrumbList>
-        </Breadcrumb>
+        <DynamicBreadcrumb
+          className=''
+          text='Dashboard, Lista de Clientes, Adicionar Cliente'
+          link='/dashboard, /dashboard/customers'
+        />
       </section>
       <section className='flex flex-col items-center pb-14'>
         <form onSubmit={handleSubmit(processForm)}>

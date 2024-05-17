@@ -1,13 +1,7 @@
 "use client";
 
-import {
-  Breadcrumb,
-  BreadcrumbItem,
-  BreadcrumbLink,
-  BreadcrumbList,
-  BreadcrumbSeparator,
-} from "@/components/ui/breadcrumb";
 import { Button } from "@/components/ui/button";
+import DynamicBreadcrumb from "@/components/ui/dynamic-breadcrumb";
 import {
   Pagination,
   PaginationContent,
@@ -95,19 +89,11 @@ export default function Customers() {
   return (
     <main className='flex min-h-screen flex-col p-8 gap-4'>
       <section className='mb-2 items-left ml-4'>
-        <Breadcrumb>
-          <BreadcrumbList>
-            <BreadcrumbItem>
-              <BreadcrumbLink href='/dashboard'>Dashboard</BreadcrumbLink>
-            </BreadcrumbItem>
-            <BreadcrumbSeparator />
-            <BreadcrumbItem>
-              <BreadcrumbLink href='/dashboard/customers'>
-                Lista de Clientes
-              </BreadcrumbLink>
-            </BreadcrumbItem>
-          </BreadcrumbList>
-        </Breadcrumb>
+        <DynamicBreadcrumb
+          className=''
+          text='Dashboard, Lista de Clientes'
+          link='/dashboard'
+        />
         <section className='flex flex-row justify-between mt-5'>
           <Button
             disabled={loadingCustomers}
