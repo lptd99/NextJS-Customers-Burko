@@ -85,8 +85,8 @@ export default function CustomersEdit() {
         <section className='mb-2 items-left ml-4'>
           <DynamicBreadcrumb
             className=''
-            texts={["Dashboard", "Lista de Clientes", "Alterar Cliente"]}
-            links={["/dashboard", "/dashboard/customers"]}
+            text='Dashboard, Lista de Clientes, Alterar Cliente'
+            link='/dashboard, /dashboard/customers'
           />
           <section className='flex flex-col items-center pb-14'>
             <form onSubmit={handleSubmit(processForm)}>
