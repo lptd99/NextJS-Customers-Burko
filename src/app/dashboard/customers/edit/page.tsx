@@ -82,7 +82,7 @@ export default function CustomersEdit() {
   return (
     <main className='flex min-h-screen flex-col p-8 gap-4'>
       {render && (
-        <>
+        <section className='mb-2 items-left ml-4'>
           <DynamicBreadcrumb
             className=''
             texts={["Dashboard", "Lista de Clientes", "Alterar Cliente"]}
@@ -275,7 +275,7 @@ export default function CustomersEdit() {
             </form>
           </section>
           <ToastContainer />
-        </>
+        </section>
       )}
     </main>
   );
