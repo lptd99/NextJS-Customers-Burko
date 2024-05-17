@@ -107,6 +107,7 @@ export default function CustomersEdit() {
                         Nome
                       </Label>
                       <Input
+                        disabled={true}
                         type='text'
                         id='text'
                         className={errors.name?.message ? "border-error" : ""}
