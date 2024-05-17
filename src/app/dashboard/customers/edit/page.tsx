@@ -16,6 +16,7 @@ import { Spinner } from "@/components/ui/spinner";
 import { CustomerZodSchema } from "@/schemas/CustomerZodSchema";
 import { useStore } from "@/stores";
 import { zodResolver } from "@hookform/resolvers/zod";
+import axios from "axios";
 import { ShieldAlert } from "lucide-react";
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
@@ -48,10 +49,12 @@ export default function CustomersEdit() {
     setLoading(true);
     try {
       // await new Promise((resolve) => setTimeout(resolve, 1000));
-      // const response = await axios.PUT?PATCH?(
-      //   "http://localhost:4000/customers",
-      //   data
-      // );
+      if (store.customerToUpdate) {
+        const response = await axios.put(
+          `http://localhost:4000/customers/${store.customerToUpdate.id}`,
+          data
+        );
+      }
       success("Cliente alterado com sucesso!");
       setLoading(false);
       reset();
