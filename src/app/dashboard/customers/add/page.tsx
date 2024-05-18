@@ -1,5 +1,6 @@
 "use client";
 
+import { IAddressBR } from "@/app/interfaces/interfaces";
 import { Button } from "@/components/ui/button";
 import {
   Card,

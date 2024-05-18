@@ -1,5 +1,6 @@
 "use client";
 
+import { ICustomer } from "@/app/interfaces/interfaces";
 import { Button } from "@/components/ui/button";
 import DynamicBreadcrumb from "@/components/ui/dynamic-breadcrumb";
 import {

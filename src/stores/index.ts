@@ -1,4 +1,4 @@
-import { ICustomer } from "@/interfaces";
+import { ICustomer } from "@/app/interfaces/interfaces";
 import { create } from "zustand";
 import { createJSONStorage, persist } from "zustand/middleware";
 
