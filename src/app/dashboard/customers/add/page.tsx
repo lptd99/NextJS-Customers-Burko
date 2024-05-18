@@ -99,7 +99,7 @@ export default function CustomersAdd() {
                     placeholder='Digite o nome'
                     {...register("name")}
                   />
-                  <p className='text-error text-xs font-semibold text-center mt-2'>
+                  <p className='text-error text-xs font-semibold text-center mt-1'>
                     {errors.name?.message}
                   </p>
                 </section>
@@ -116,7 +116,7 @@ export default function CustomersAdd() {
                     placeholder='Digite o e-mail'
                     {...register("email")}
                   />
-                  <p className='text-error text-xs font-semibold text-center mt-2'>
+                  <p className='text-error text-xs font-semibold text-center mt-1'>
                     {errors.email?.message}
                   </p>
                 </section>
@@ -133,7 +133,7 @@ export default function CustomersAdd() {
                     placeholder='Digite o telefone/celular'
                     {...register("phone")}
                   />
-                  <p className='text-error text-xs font-semibold text-center mt-2'>
+                  <p className='text-error text-xs font-semibold text-center mt-1'>
                     {errors.phone?.message}
                   </p>
                 </section>
@@ -150,7 +150,7 @@ export default function CustomersAdd() {
                     placeholder='Digite o endereço'
                     {...register("address")}
                   />
-                  <p className='text-error text-xs font-semibold text-center mt-2'>
+                  <p className='text-error text-xs font-semibold text-center mt-1'>
                     {errors.address?.message}
                   </p>
                 </section>
@@ -167,7 +167,7 @@ export default function CustomersAdd() {
                     placeholder='Digite a cidade'
                     {...register("city")}
                   />
-                  <p className='text-error text-xs font-semibold text-center mt-2'>
+                  <p className='text-error text-xs font-semibold text-center mt-1'>
                     {errors.city?.message}
                   </p>
                 </section>
@@ -184,7 +184,7 @@ export default function CustomersAdd() {
                     placeholder='Digite o estado'
                     {...register("state")}
                   />
-                  <p className='text-error text-xs font-semibold text-center mt-2'>
+                  <p className='text-error text-xs font-semibold text-center mt-1'>
                     {errors.state?.message}
                   </p>
                 </section>
