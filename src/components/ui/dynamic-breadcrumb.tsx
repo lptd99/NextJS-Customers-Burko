@@ -25,25 +25,35 @@ export default function DynamicBreadcrumb({
     <Breadcrumb>
       <BreadcrumbList>
         {texts.map((text, index) => (
-          <>
+          <section
+            key={index + "s"}
+            className='flex-row flex w-content'>
             {index < texts.length - 1 && (
-              <BreadcrumbItem key={index}>
+              <BreadcrumbItem key={index + "i"}>
                 <BreadcrumbLink
                   className={className}
-                  href={links[index]}>
+                  href={links[index]}
+                  key={index + "l"}>
                   {text}
                 </BreadcrumbLink>
               </BreadcrumbItem>
             )}
             {index < texts.length - 1 && (
-              <BreadcrumbSeparator className={className} />
+              <BreadcrumbSeparator
+                className={className + "mt-[3px] ml-1.5"}
+                key={index + "s"}
+              />
             )}
             {index === texts.length - 1 && (
-              <BreadcrumbItem key={index}>
-                <BreadcrumbLink className={className}>{text}</BreadcrumbLink>
+              <BreadcrumbItem key={index + "ii"}>
+                <BreadcrumbLink
+                  className={className}
+                  key={index + "li"}>
+                  {text}
+                </BreadcrumbLink>
               </BreadcrumbItem>
             )}
-          </>
+          </section>
         ))}
       </BreadcrumbList>
     </Breadcrumb>
