@@ -21,7 +21,6 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
-import { ICustomer } from "@/interfaces";
 import { useStore } from "@/stores";
 import {
   Description,
