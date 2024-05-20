@@ -28,6 +28,7 @@ import { z } from "zod";
 export default function CustomersEdit() {
   const store = useStore();
   const [loading, setLoading] = useState<boolean>(false);
+  const [loadingPostalCode, setLoadingPostalCode] = useState<boolean>(false);
   type Inputs = z.infer<typeof CustomerZodSchema>;
   const router = useRouter();
   const [render, setRender] = useState<boolean>();
@@ -51,16 +52,16 @@ export default function CustomersEdit() {
   const country = watch("country")?.toLowerCase().trim();
 
   const getPostalCode: any = useCallback(async () => {
-    console.log(postal_code);
-    console.log(country);
-
     if (country === "brasil" || country === "brazil" || country === "br") {
       if (postal_code?.length === 9) {
         try {
+          setLoadingPostalCode(true);
+          await new Promise((resolve) => setTimeout(resolve, 1000));
           const response = await axios.get(
             `https://viacep.com.br/ws/${postal_code.replace("-", "")}/json`
           );
           if (response.status === 200) {
+            setLoadingPostalCode(false);
             if (response.data.erro) {
               setError("postal_code", {
                 message: "CEP inválido",
@@ -241,16 +242,23 @@ export default function CustomersEdit() {
                         }>
                         CEP
                       </Label>
-                      <Input
-                        type='text'
-                        id='text'
-                        className={
-                          errors.postal_code?.message ? "border-error" : ""
-                        }
-                        placeholder='Digite o CEP'
-                        {...register("postal_code")}
-                        defaultValue={store.customerToUpdate?.postal_code}
-                      />
+                      <section className='relative'>
+                        <Input
+                          type='text'
+                          id='text'
+                          className={
+                            errors.postal_code?.message ? "border-error" : ""
+                          }
+                          placeholder='Digite o CEP'
+                          {...register("postal_code")}
+                          defaultValue={store.customerToUpdate?.postal_code}
+                        />
+                        {loadingPostalCode && (
+                          <section className='absolute top-0.5 right-1'>
+                            <Spinner />
+                          </section>
+                        )}
+                      </section>
                       <p className='text-error text-xs font-semibold text-center mt-1'>
                         {errors.postal_code?.message}
                       </p>
