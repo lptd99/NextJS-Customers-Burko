@@ -14,6 +14,7 @@ Technologies used:
   NPM JSON Server
   Zustand
   use-mask-input
+  Heroicons
 
 VSCode Extensions used:
   ESLint
