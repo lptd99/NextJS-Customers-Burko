@@ -40,6 +40,7 @@ export default function CustomersEdit() {
     watch,
     reset,
     setError,
+    setValue,
     formState: { errors },
   } = useForm<Inputs>({
     mode: "onBlur",
@@ -54,20 +55,28 @@ export default function CustomersEdit() {
     console.log(country);
 
     if (country === "brasil" || country === "brazil" || country === "br") {
-      if (postal_code?.length === 8) {
+      if (postal_code?.length === 9) {
         try {
           const response = await axios.get(
-            `https://viacep.com.br/ws/${postal_code}/json`
+            `https://viacep.com.br/ws/${postal_code.replace("-", "")}/json`
           );
           if (response.status === 200) {
             if (response.data.erro) {
               setError("postal_code", {
                 message: "CEP inválido",
               });
+            } else {
+              setError("postal_code", {
+                message: "",
+              });
+              setValue(
+                "address",
+                response.data.logradouro + ", " + response.data.bairro
+              );
+              setValue("city", response.data.localidade);
+              setValue("state", response.data.uf);
             }
           }
-          console.log(response.data);
-          console.log(response.data.erro);
 
           //setAddress(response);
         } catch (error) {
@@ -79,11 +88,18 @@ export default function CustomersEdit() {
         });
       }
     }
-  }, [postal_code, country, setError]);
+  }, [postal_code, country, setError, setValue]);
+
+  const maskPostalCode: any = useCallback(async () => {
+    setValue("postal_code", postal_code.replace(/(\d{5})(\d{3})/, "$1-$2"));
+  }, [postal_code, setValue]);
 
   useEffect(() => {
+    if (postal_code && !postal_code.includes("-")) {
+      maskPostalCode();
+    }
     getPostalCode();
-  }, [postal_code, getPostalCode]);
+  }, [postal_code, getPostalCode, maskPostalCode]);
 
   const processForm: SubmitHandler<Inputs> = async (data) => {
     setLoading(true);

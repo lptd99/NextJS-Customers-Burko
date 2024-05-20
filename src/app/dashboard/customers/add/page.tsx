@@ -72,29 +72,33 @@ export default function CustomersAdd() {
   const postal_code = watch("postal_code");
   const country = watch("country")?.toLowerCase().trim();
 
+  const maskPostalCode: any = useCallback(async () => {
+    setValue("postal_code", postal_code.replace(/(\d{5})(\d{3})/, "$1-$2"));
+  }, [postal_code, setValue]);
+
   const getPostalCode: any = useCallback(async () => {
     if (country === "brasil" || country === "brazil" || country === "br") {
-      if (postal_code?.length === 8) {
+      if (postal_code?.length === 9) {
         setError("postal_code", {
           message: "",
         });
         try {
           const response = await axios.get(
-            `https://viacep.com.br/ws/${postal_code}/json`
+            `https://viacep.com.br/ws/${postal_code.replace("-", "")}/json`
           );
           if (response.status === 200) {
             if (response.data.erro) {
               setError("postal_code", {
                 message: "CEP inválido",
               });
+            } else {
+              setValue(
+                "address",
+                response.data.logradouro + ", " + response.data.bairro
+              );
+              setValue("city", response.data.localidade);
+              setValue("state", response.data.uf);
             }
-            setValue(
-              "address",
-              response.data.logradouro + ", " + response.data.bairro
-            );
-            setValue("city", response.data.localidade);
-            setValue("state", response.data.uf);
-            console.log(response);
           }
         } catch (error) {
           console.log("Erro ao processar CEP");
@@ -108,8 +112,11 @@ export default function CustomersAdd() {
   }, [postal_code, country, setError, setValue]);
 
   useEffect(() => {
+    if (postal_code && !postal_code.includes("-")) {
+      maskPostalCode();
+    }
     getPostalCode();
-  }, [postal_code, getPostalCode]);
+  }, [postal_code, getPostalCode, maskPostalCode]);
 
   return (
     <main className='flex min-h-screen flex-col p-8 gap-4'>

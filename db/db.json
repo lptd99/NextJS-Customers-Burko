@@ -373,6 +373,17 @@
       "state": "423432432",
       "postal_code": "43242432",
       "country": "43243242"
+    },
+    {
+      "id": "3aa9",
+      "name": "23243243",
+      "email": "2341242@2342342.bbb",
+      "phone": "343423432",
+      "address": "Rua São Bruno, Jardim São Bento",
+      "city": "São Paulo",
+      "state": "SP",
+      "country": "brAsil",
+      "postal_code": "02525-020"
     }
   ],
   "login": {
@@ -381,7 +392,9 @@
       "id": 123,
       "username": "example_user",
       "email": "user@example.com",
-      "roles": ["user"]
+      "roles": [
+        "user"
+      ]
     },
     "expires_in": 3600
   }
