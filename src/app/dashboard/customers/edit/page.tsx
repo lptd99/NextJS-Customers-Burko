@@ -23,6 +23,7 @@ import { useCallback, useEffect, useState } from "react";
 import { SubmitHandler, useForm } from "react-hook-form";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import { useHookFormMask } from "use-mask-input";
 import { z } from "zod";
 
 export default function CustomersEdit() {
@@ -47,13 +48,14 @@ export default function CustomersEdit() {
     mode: "onBlur",
     resolver: zodResolver(CustomerZodSchema),
   });
+  const registerWithMask = useHookFormMask(register);
 
   const postal_code = watch("postal_code");
   const country = watch("country")?.toLowerCase().trim();
 
   const getPostalCode: any = useCallback(async () => {
     if (country === "brasil" || country === "brazil" || country === "br") {
-      if (postal_code?.length === 9) {
+      if (postal_code?.length === 9 && !postal_code.includes("_")) {
         try {
           setLoadingPostalCode(true);
           await new Promise((resolve) => setTimeout(resolve, 1000));
@@ -89,18 +91,12 @@ export default function CustomersEdit() {
         });
       }
     }
+    setLoadingPostalCode(false);
   }, [postal_code, country, setError, setValue]);
 
-  const maskPostalCode: any = useCallback(async () => {
-    setValue("postal_code", postal_code.replace(/(\d{5})(\d{3})/, "$1-$2"));
-  }, [postal_code, setValue]);
-
   useEffect(() => {
-    if (postal_code && !postal_code.includes("-")) {
-      maskPostalCode();
-    }
     getPostalCode();
-  }, [postal_code, getPostalCode, maskPostalCode]);
+  }, [postal_code, getPostalCode]);
 
   const processForm: SubmitHandler<Inputs> = async (data) => {
     setLoading(true);
@@ -207,11 +203,30 @@ export default function CustomersEdit() {
                         id='text'
                         className={errors.phone?.message ? "border-error" : ""}
                         placeholder='Digite o telefone/celular'
-                        {...register("phone")}
+                        {...registerWithMask("phone", ["(99) [9]9999-9999"], {
+                          required: true,
+                        })}
                         defaultValue={store.customerToUpdate?.phone}
                       />
                       <p className='text-error text-xs font-semibold text-center mt-1'>
                         {errors.phone?.message}
+                      </p>
+                    </section>
+                    <section>
+                      <Label
+                        htmlFor='CPF'
+                        className={errors.phone?.message ? "text-error" : ""}>
+                        CPF
+                      </Label>
+                      <Input
+                        type='text'
+                        id='text'
+                        className={errors.phone?.message ? "border-error" : ""}
+                        placeholder='Digite o CPF'
+                        {...registerWithMask("cpf", ["999.999.999-99"])}
+                      />
+                      <p className='text-error text-xs font-semibold text-center mt-1'>
+                        {errors.cpf?.message}
                       </p>
                     </section>
                     <section className='items-center'>
@@ -250,7 +265,7 @@ export default function CustomersEdit() {
                             errors.postal_code?.message ? "border-error" : ""
                           }
                           placeholder='Digite o CEP'
-                          {...register("postal_code")}
+                          {...registerWithMask("postal_code", ["99999-999"])}
                           defaultValue={store.customerToUpdate?.postal_code}
                         />
                         {loadingPostalCode && (

@@ -21,11 +21,12 @@ import { useCallback, useEffect, useState } from "react";
 import { SubmitHandler, useForm } from "react-hook-form";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import { useHookFormMask } from "use-mask-input";
 import { z } from "zod";
-
 export default function CustomersAdd() {
   const [loading, setLoading] = useState<boolean>(false);
   type Inputs = z.infer<typeof CustomerZodSchema>;
+  const [loadingPostalCode, setLoadingPostalCode] = useState<boolean>(false);
 
   const success = (text: string) => toast.success(text);
 
@@ -42,6 +43,7 @@ export default function CustomersAdd() {
     resolver: zodResolver(CustomerZodSchema),
   });
 
+  const registerWithMask = useHookFormMask(register);
   const processForm: SubmitHandler<Inputs> = async (data) => {
     setLoading(true);
     try {
@@ -78,11 +80,13 @@ export default function CustomersAdd() {
 
   const getPostalCode: any = useCallback(async () => {
     if (country === "brasil" || country === "brazil" || country === "br") {
-      if (postal_code?.length === 9) {
+      if (postal_code?.length === 9 && !postal_code.includes("_")) {
         setError("postal_code", {
           message: "",
         });
         try {
+          setLoadingPostalCode(true);
+          await new Promise((resolve) => setTimeout(resolve, 1000));
           const response = await axios.get(
             `https://viacep.com.br/ws/${postal_code.replace("-", "")}/json`
           );
@@ -108,6 +112,7 @@ export default function CustomersAdd() {
           message: "CEP inválido",
         });
       }
+      setLoadingPostalCode(false);
     }
   }, [postal_code, country, setError, setValue]);
 
@@ -181,10 +186,27 @@ export default function CustomersAdd() {
                     id='text'
                     className={errors.phone?.message ? "border-error" : ""}
                     placeholder='Digite o telefone/celular'
-                    {...register("phone")}
+                    {...registerWithMask("phone", ["(99) [9]9999-9999"])}
                   />
                   <p className='text-error text-xs font-semibold text-center mt-1'>
                     {errors.phone?.message}
+                  </p>
+                </section>
+                <section>
+                  <Label
+                    htmlFor='CPF'
+                    className={errors.phone?.message ? "text-error" : ""}>
+                    CPF
+                  </Label>
+                  <Input
+                    type='text'
+                    id='text'
+                    className={errors.phone?.message ? "border-error" : ""}
+                    placeholder='Digite o CPF'
+                    {...registerWithMask("cpf", ["999.999.999-99"])}
+                  />
+                  <p className='text-error text-xs font-semibold text-center mt-1'>
+                    {errors.cpf?.message}
                   </p>
                 </section>
                 <section className='items-center'>
@@ -210,15 +232,23 @@ export default function CustomersAdd() {
                     className={errors.postal_code?.message ? "text-error" : ""}>
                     CEP
                   </Label>
-                  <Input
-                    type='text'
-                    id='text'
-                    className={
-                      errors.postal_code?.message ? "border-error" : ""
-                    }
-                    placeholder='Digite o CEP'
-                    {...register("postal_code")}
-                  />
+
+                  <section className='relative'>
+                    <Input
+                      type='text'
+                      id='text'
+                      className={
+                        errors.postal_code?.message ? "border-error" : ""
+                      }
+                      placeholder='Digite o CEP'
+                      {...registerWithMask("postal_code", ["99999-999"])}
+                    />
+                    {loadingPostalCode && (
+                      <section className='absolute top-0.5 right-1'>
+                        <Spinner />
+                      </section>
+                    )}
+                  </section>
                   <p className='text-error text-xs font-semibold text-center mt-1'>
                     {errors.postal_code?.message}
                   </p>
