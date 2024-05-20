@@ -1,6 +1,5 @@
 "use client";
 
-import { IAddressBR } from "@/app/interfaces/interfaces";
 import { Button } from "@/components/ui/button";
 import {
   Card,
@@ -18,7 +17,7 @@ import { CustomerZodSchema } from "@/schemas/CustomerZodSchema";
 import { zodResolver } from "@hookform/resolvers/zod";
 import axios from "axios";
 import { ShieldAlert } from "lucide-react";
-import { useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import { SubmitHandler, useForm } from "react-hook-form";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
@@ -35,6 +34,8 @@ export default function CustomersAdd() {
     handleSubmit,
     watch,
     reset,
+    setError,
+    setValue,
     formState: { errors },
   } = useForm<Inputs>({
     mode: "onBlur",
@@ -67,6 +68,48 @@ export default function CustomersAdd() {
       errors.country?.message
     );
   }
+
+  const postal_code = watch("postal_code");
+  const country = watch("country")?.toLowerCase().trim();
+
+  const getPostalCode: any = useCallback(async () => {
+    if (country === "brasil" || country === "brazil" || country === "br") {
+      if (postal_code?.length === 8) {
+        setError("postal_code", {
+          message: "",
+        });
+        try {
+          const response = await axios.get(
+            `https://viacep.com.br/ws/${postal_code}/json`
+          );
+          if (response.status === 200) {
+            if (response.data.erro) {
+              setError("postal_code", {
+                message: "CEP inválido",
+              });
+            }
+            setValue(
+              "address",
+              response.data.logradouro + ", " + response.data.bairro
+            );
+            setValue("city", response.data.localidade);
+            setValue("state", response.data.uf);
+            console.log(response);
+          }
+        } catch (error) {
+          console.log("Erro ao processar CEP");
+        }
+      } else {
+        setError("postal_code", {
+          message: "CEP inválido",
+        });
+      }
+    }
+  }, [postal_code, country, setError, setValue]);
+
+  useEffect(() => {
+    getPostalCode();
+  }, [postal_code, getPostalCode]);
 
   return (
     <main className='flex min-h-screen flex-col p-8 gap-4'>
@@ -137,6 +180,42 @@ export default function CustomersAdd() {
                     {errors.phone?.message}
                   </p>
                 </section>
+                <section className='items-center'>
+                  <Label
+                    htmlFor='Country'
+                    className={errors.country?.message ? "text-error" : ""}>
+                    País
+                  </Label>
+                  <Input
+                    type='text'
+                    id='text'
+                    className={errors.country?.message ? "border-error" : ""}
+                    placeholder='Digite o país'
+                    {...register("country")}
+                  />
+                  <p className='text-error text-xs font-semibold text-center mt-1'>
+                    {errors.country?.message}
+                  </p>
+                </section>
+                <section>
+                  <Label
+                    htmlFor='PostalCode'
+                    className={errors.postal_code?.message ? "text-error" : ""}>
+                    CEP
+                  </Label>
+                  <Input
+                    type='text'
+                    id='text'
+                    className={
+                      errors.postal_code?.message ? "border-error" : ""
+                    }
+                    placeholder='Digite o CEP'
+                    {...register("postal_code")}
+                  />
+                  <p className='text-error text-xs font-semibold text-center mt-1'>
+                    {errors.postal_code?.message}
+                  </p>
+                </section>
                 <section>
                   <Label
                     htmlFor='Address'
@@ -186,42 +265,6 @@ export default function CustomersAdd() {
                   />
                   <p className='text-error text-xs font-semibold text-center mt-1'>
                     {errors.state?.message}
-                  </p>
-                </section>
-                <section>
-                  <Label
-                    htmlFor='PostalCode'
-                    className={errors.postal_code?.message ? "text-error" : ""}>
-                    CEP
-                  </Label>
-                  <Input
-                    type='text'
-                    id='text'
-                    className={
-                      errors.postal_code?.message ? "border-error" : ""
-                    }
-                    placeholder='Digite o CEP'
-                    {...register("postal_code")}
-                  />
-                  <p className='text-error text-xs font-semibold text-center mt-2'>
-                    {errors.postal_code?.message}
-                  </p>
-                </section>
-                <section className='items-center'>
-                  <Label
-                    htmlFor='Country'
-                    className={errors.country?.message ? "text-error" : ""}>
-                    País
-                  </Label>
-                  <Input
-                    type='text'
-                    id='text'
-                    className={errors.country?.message ? "border-error" : ""}
-                    placeholder='Digite o país'
-                    {...register("country")}
-                  />
-                  <p className='text-error text-xs font-semibold text-center mt-2'>
-                    {errors.country?.message}
                   </p>
                 </section>
               </section>

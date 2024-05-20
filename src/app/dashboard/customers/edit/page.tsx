@@ -19,7 +19,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import axios from "axios";
 import { ShieldAlert } from "lucide-react";
 import { useRouter } from "next/navigation";
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import { SubmitHandler, useForm } from "react-hook-form";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
@@ -39,11 +39,51 @@ export default function CustomersEdit() {
     handleSubmit,
     watch,
     reset,
+    setError,
     formState: { errors },
   } = useForm<Inputs>({
     mode: "onBlur",
     resolver: zodResolver(CustomerZodSchema),
   });
+
+  const postal_code = watch("postal_code");
+  const country = watch("country")?.toLowerCase().trim();
+
+  const getPostalCode: any = useCallback(async () => {
+    console.log(postal_code);
+    console.log(country);
+
+    if (country === "brasil" || country === "brazil" || country === "br") {
+      if (postal_code?.length === 8) {
+        try {
+          const response = await axios.get(
+            `https://viacep.com.br/ws/${postal_code}/json`
+          );
+          if (response.status === 200) {
+            if (response.data.erro) {
+              setError("postal_code", {
+                message: "CEP inválido",
+              });
+            }
+          }
+          console.log(response.data);
+          console.log(response.data.erro);
+
+          //setAddress(response);
+        } catch (error) {
+          console.log("Erro ao processar CEP");
+        }
+      } else {
+        setError("postal_code", {
+          message: "CEP inválido",
+        });
+      }
+    }
+  }, [postal_code, country, setError]);
+
+  useEffect(() => {
+    getPostalCode();
+  }, [postal_code, getPostalCode]);
 
   const processForm: SubmitHandler<Inputs> = async (data) => {
     setLoading(true);
@@ -103,20 +143,22 @@ export default function CustomersEdit() {
                     <section>
                       <Label
                         htmlFor='Name'
-                        className={errors.name?.message ? "text-error" : ""}>
+                        className='text-gray-500'>
                         Nome
                       </Label>
                       <Input
-                        disabled={true}
+                        // disabled={true}
+                        readOnly
                         type='text'
                         id='text'
-                        className={errors.name?.message ? "border-error" : ""}
+                        className='text-gray-400'
                         placeholder='Digite o nome'
                         {...register("name")}
                         defaultValue={store.customerToUpdate?.name}
                       />
-                      <p className='text-error text-xs font-semibold text-center mt-2'>
-                        {errors.name?.message}
+                      <p
+                        className={`text-gray-500 text-xs font-semibold text-center mt-1`}>
+                        Não pode ser alterado
                       </p>
                     </section>
                     <section>
@@ -133,7 +175,7 @@ export default function CustomersEdit() {
                         {...register("email")}
                         defaultValue={store.customerToUpdate?.email}
                       />
-                      <p className='text-error text-xs font-semibold text-center mt-2'>
+                      <p className='text-error text-xs font-semibold text-center mt-1'>
                         {errors.email?.message}
                       </p>
                     </section>
@@ -151,64 +193,28 @@ export default function CustomersEdit() {
                         {...register("phone")}
                         defaultValue={store.customerToUpdate?.phone}
                       />
-                      <p className='text-error text-xs font-semibold text-center mt-2'>
+                      <p className='text-error text-xs font-semibold text-center mt-1'>
                         {errors.phone?.message}
                       </p>
                     </section>
-                    <section>
+                    <section className='items-center'>
                       <Label
-                        htmlFor='Address'
-                        className={errors.address?.message ? "text-error" : ""}>
-                        Endereço
+                        htmlFor='Country'
+                        className={errors.country?.message ? "text-error" : ""}>
+                        País
                       </Label>
                       <Input
                         type='text'
                         id='text'
                         className={
-                          errors.address?.message ? "border-error" : ""
+                          errors.country?.message ? "border-error" : ""
                         }
-                        placeholder='Digite o endereço'
-                        {...register("address")}
-                        defaultValue={store.customerToUpdate?.address}
+                        placeholder='Digite o país'
+                        {...register("country")}
+                        defaultValue={store.customerToUpdate?.country}
                       />
-                      <p className='text-error text-xs font-semibold text-center mt-2'>
-                        {errors.address?.message}
-                      </p>
-                    </section>
-                    <section>
-                      <Label
-                        htmlFor='City'
-                        className={errors.city?.message ? "text-error" : ""}>
-                        Cidade
-                      </Label>
-                      <Input
-                        type='text'
-                        id='text'
-                        className={errors.city?.message ? "border-error" : ""}
-                        placeholder='Digite a cidade'
-                        {...register("city")}
-                        defaultValue={store.customerToUpdate?.city}
-                      />
-                      <p className='text-error text-xs font-semibold text-center mt-2'>
-                        {errors.city?.message}
-                      </p>
-                    </section>
-                    <section>
-                      <Label
-                        htmlFor='State'
-                        className={errors.state?.message ? "text-error" : ""}>
-                        Estado
-                      </Label>
-                      <Input
-                        type='text'
-                        id='text'
-                        className={errors.state?.message ? "border-error" : ""}
-                        placeholder='Digite o estado'
-                        {...register("state")}
-                        defaultValue={store.customerToUpdate?.state}
-                      />
-                      <p className='text-error text-xs font-semibold text-center mt-2'>
-                        {errors.state?.message}
+                      <p className='text-error text-xs font-semibold text-center mt-1'>
+                        {errors.country?.message}
                       </p>
                     </section>
                     <section>
@@ -229,28 +235,64 @@ export default function CustomersEdit() {
                         {...register("postal_code")}
                         defaultValue={store.customerToUpdate?.postal_code}
                       />
-                      <p className='text-error text-xs font-semibold text-center mt-2'>
+                      <p className='text-error text-xs font-semibold text-center mt-1'>
                         {errors.postal_code?.message}
                       </p>
                     </section>
-                    <section className='items-center'>
+                    <section>
                       <Label
-                        htmlFor='Country'
-                        className={errors.country?.message ? "text-error" : ""}>
-                        País
+                        htmlFor='Address'
+                        className={errors.address?.message ? "text-error" : ""}>
+                        Endereço
                       </Label>
                       <Input
                         type='text'
                         id='text'
                         className={
-                          errors.country?.message ? "border-error" : ""
+                          errors.address?.message ? "border-error" : ""
                         }
-                        placeholder='Digite o país'
-                        {...register("country")}
-                        defaultValue={store.customerToUpdate?.country}
+                        placeholder='Digite o endereço'
+                        {...register("address")}
+                        defaultValue={store.customerToUpdate?.address}
                       />
-                      <p className='text-error text-xs font-semibold text-center mt-2'>
-                        {errors.country?.message}
+                      <p className='text-error text-xs font-semibold text-center mt-1'>
+                        {errors.address?.message}
+                      </p>
+                    </section>
+                    <section>
+                      <Label
+                        htmlFor='City'
+                        className={errors.city?.message ? "text-error" : ""}>
+                        Cidade
+                      </Label>
+                      <Input
+                        type='text'
+                        id='text'
+                        className={errors.city?.message ? "border-error" : ""}
+                        placeholder='Digite a cidade'
+                        {...register("city")}
+                        defaultValue={store.customerToUpdate?.city}
+                      />
+                      <p className='text-error text-xs font-semibold text-center mt-1'>
+                        {errors.city?.message}
+                      </p>
+                    </section>
+                    <section>
+                      <Label
+                        htmlFor='State'
+                        className={errors.state?.message ? "text-error" : ""}>
+                        Estado
+                      </Label>
+                      <Input
+                        type='text'
+                        id='text'
+                        className={errors.state?.message ? "border-error" : ""}
+                        placeholder='Digite o estado'
+                        {...register("state")}
+                        defaultValue={store.customerToUpdate?.state}
+                      />
+                      <p className='text-error text-xs font-semibold text-center mt-1'>
+                        {errors.state?.message}
                       </p>
                     </section>
                   </section>

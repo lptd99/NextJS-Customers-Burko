@@ -29,6 +29,9 @@ Browser Extensions used:
   VisBug
   Redux DevTools
 
+APIs used:
+  ViaCEP (https://viacep.com.br)
+
 Useful commands:
   npm run dev
   npm run api
