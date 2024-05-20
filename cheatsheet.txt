@@ -13,6 +13,7 @@ Technologies used:
   HeadlessUI
   NPM JSON Server
   Zustand
+  use-mask-input
 
 VSCode Extensions used:
   ESLint
