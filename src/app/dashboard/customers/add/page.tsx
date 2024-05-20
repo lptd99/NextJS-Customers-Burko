@@ -225,8 +225,9 @@ export default function CustomersAdd() {
                   <Input
                     type='text'
                     id='text'
+                    readOnly
                     className={errors.address?.message ? "border-error" : ""}
-                    placeholder='Digite o endereço'
+                    placeholder='Digite o CEP'
                     {...register("address")}
                   />
                   <p className='text-error text-xs font-semibold text-center mt-1'>
@@ -242,8 +243,9 @@ export default function CustomersAdd() {
                   <Input
                     type='text'
                     id='text'
+                    readOnly
                     className={errors.city?.message ? "border-error" : ""}
-                    placeholder='Digite a cidade'
+                    placeholder='Digite o CEP'
                     {...register("city")}
                   />
                   <p className='text-error text-xs font-semibold text-center mt-1'>
@@ -259,8 +261,9 @@ export default function CustomersAdd() {
                   <Input
                     type='text'
                     id='text'
+                    readOnly
                     className={errors.state?.message ? "border-error" : ""}
-                    placeholder='Digite o estado'
+                    placeholder='Digite o CEP'
                     {...register("state")}
                   />
                   <p className='text-error text-xs font-semibold text-center mt-1'>

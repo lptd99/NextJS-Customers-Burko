@@ -248,10 +248,11 @@ export default function CustomersEdit() {
                       <Input
                         type='text'
                         id='text'
+                        readOnly
                         className={
                           errors.address?.message ? "border-error" : ""
                         }
-                        placeholder='Digite o endereço'
+                        placeholder='Digite o CEP'
                         {...register("address")}
                         defaultValue={store.customerToUpdate?.address}
                       />
@@ -268,8 +269,9 @@ export default function CustomersEdit() {
                       <Input
                         type='text'
                         id='text'
+                        readOnly
                         className={errors.city?.message ? "border-error" : ""}
-                        placeholder='Digite a cidade'
+                        placeholder='Digite o CEP'
                         {...register("city")}
                         defaultValue={store.customerToUpdate?.city}
                       />
@@ -286,8 +288,9 @@ export default function CustomersEdit() {
                       <Input
                         type='text'
                         id='text'
+                        readOnly
                         className={errors.state?.message ? "border-error" : ""}
-                        placeholder='Digite o estado'
+                        placeholder='Digite o CEP'
                         {...register("state")}
                         defaultValue={store.customerToUpdate?.state}
                       />
