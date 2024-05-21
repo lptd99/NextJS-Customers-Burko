@@ -1,13 +1,13 @@
 export interface ICustomer {
   id: number;
   name: string;
-  city: string;
   email: string;
   phone: string;
-  address: string;
-  state: string;
+  country: string;
   postal_code: string;
-  country?: string;
+  address: string;
+  city: string;
+  state: string;
 }
 
 export interface IAddressBR {
