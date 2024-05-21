@@ -1,5 +1,6 @@
 "use client";
 
+import { ICommodity } from "@/app/interfaces/interfaces";
 import { Button } from "@/components/ui/button";
 import {
   Card,
@@ -9,6 +10,7 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
+import CommodityCombobox from "@/components/ui/commodityCombobox";
 import DynamicBreadcrumb from "@/components/ui/dynamic-breadcrumb";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -115,6 +117,10 @@ export default function CustomersAdd() {
       setLoadingPostalCode(false);
     }
   }, [postal_code, country, setError, setValue]);
+
+  function handleCommodityChange(commodity: ICommodity) {
+    setValue("commodity", commodity.name);
+  }
 
   useEffect(() => {
     if (postal_code && !postal_code.includes("-")) {
@@ -306,6 +312,12 @@ export default function CustomersAdd() {
                   <p className='text-error text-xs font-semibold text-center mt-1'>
                     {errors.state?.message}
                   </p>
+                </section>
+                <section>
+                  <Label>Tipo de Commodity</Label>
+                  <CommodityCombobox
+                    handleCommodityChange={handleCommodityChange}
+                  />
                 </section>
               </section>
             </CardContent>

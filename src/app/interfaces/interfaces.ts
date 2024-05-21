@@ -9,6 +9,7 @@ export interface ICustomer {
   address: string;
   city: string;
   state: string;
+  commodity: string;
 }
 
 export interface IAddressBR {
@@ -22,4 +23,13 @@ export interface IAddressBR {
   gia: string;
   ddd: string;
   siafi: string;
+}
+
+export interface ICommodity {
+  id: number;
+  name: string;
+}
+
+export interface ICommodityFunction {
+  handleCommodityChange: (commodity: ICommodity) => void;
 }
