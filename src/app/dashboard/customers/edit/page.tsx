@@ -230,6 +230,7 @@ export default function CustomersEdit() {
                         className={errors.phone?.message ? "border-error" : ""}
                         placeholder='Digite o CPF'
                         {...registerWithMask("cpf", ["999.999.999-99"])}
+                        defaultValue={store.customerToUpdate?.cpf}
                       />
                       <p className='text-error text-xs font-semibold text-center mt-1'>
                         {errors.cpf?.message}
