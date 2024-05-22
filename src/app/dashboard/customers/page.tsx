@@ -84,24 +84,9 @@ export default function Customers() {
   }
 
   useEffect(() => {
-    const updatePageFromHash = () => {
-      const hash = window.location.hash;
-      const pageNumber = parseInt(hash.replace("#", ""), 10);
-      console.log(pageNumber, lastPage);
-
-      if (!isNaN(pageNumber) && pageNumber > 0 && pageNumber <= lastPage) {
-        setPage(pageNumber);
-      } else {
-        router.push("/dashboard/customers#1");
-        setPage(1); // Default to page 1 if hash is invalid
-      }
-    };
-
     updatePageFromHash();
     window.addEventListener("hashchange", updatePageFromHash);
-
     fetchCustomers(page, perPage);
-
     return () => {
       window.removeEventListener("hashchange", updatePageFromHash);
     };
