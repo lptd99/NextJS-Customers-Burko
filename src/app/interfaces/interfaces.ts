@@ -33,3 +33,13 @@ export interface ICommodity {
 export interface ICommodityFunction {
   handleCommodityChange: (commodity: ICommodity) => void;
 }
+
+export interface IPaginatedCustomerResponse {
+  first: number;
+  prev: number | null;
+  next: number | null;
+  last: number;
+  pages: number;
+  items: number;
+  data: ICustomer[];
+}

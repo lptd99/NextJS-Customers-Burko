@@ -1,6 +1,9 @@
 "use client";
 
-import { ICustomer } from "@/app/interfaces/interfaces";
+import {
+  ICustomer,
+  IPaginatedCustomerResponse,
+} from "@/app/interfaces/interfaces";
 import { Button } from "@/components/ui/button";
 import DynamicBreadcrumb from "@/components/ui/dynamic-breadcrumb";
 import {
@@ -42,31 +45,73 @@ export default function Customers() {
   const [loadingCustomers, setLoadingCustomers] = useState<boolean>(false);
   const [dialogIsOpen, setDialogIsOpen] = useState<boolean>(false);
   const [customerToDelete, setCustomerToDelete] = useState<number>(-1);
+  const [page, setPage] = useState<number>(1);
+  const [perPage, setPerPage] = useState<number>(10);
+  const [firstPage, setFirstPage] = useState<number>(1);
+  const [lastPage, setLastPage] = useState<number>(1);
+  const [customerResponse, setCustomerResponse] =
+    useState<IPaginatedCustomerResponse | null>(null);
+
   const router = useRouter();
   const [isDeleting, setIsDeleting] = useState<boolean>(false);
   const store = useStore();
 
-  async function fetchCustomers() {
+  const updatePageFromHash = () => {
+    const hash = window.location.hash;
+    const pageNumber = parseInt(hash.replace("#", ""), 10);
+    if (!isNaN(pageNumber) && pageNumber > 0) {
+      setPage(pageNumber);
+    } else {
+      setPage(1); // Default to page 1 if hash is invalid
+    }
+  };
+
+  async function fetchCustomers(page: number, perPage: number) {
     setLoadingCustomers(true);
     try {
       // await new Promise((resolve) => setTimeout(resolve, 1000));
-      const response = await axios.get(`http://localhost:4000/customers`);
-      setLoadingCustomers(false);
-      setCustomers(response.data);
+      const response = await axios.get(
+        `http://localhost:4000/customers?_page=${page}&_per_page=${perPage}`
+      );
+      setCustomerResponse(response.data);
+      setFirstPage(response.data.first);
+      setLastPage(response.data.last);
+      setCustomers(response.data.data);
     } catch (error) {
       console.log("Error fetching customers.");
     }
+    setLoadingCustomers(false);
   }
 
   useEffect(() => {
-    fetchCustomers();
-  }, []);
+    const updatePageFromHash = () => {
+      const hash = window.location.hash;
+      const pageNumber = parseInt(hash.replace("#", ""), 10);
+      console.log(pageNumber, lastPage);
+
+      if (!isNaN(pageNumber) && pageNumber > 0 && pageNumber <= lastPage) {
+        setPage(pageNumber);
+      } else {
+        router.push("/dashboard/customers#1");
+        setPage(1); // Default to page 1 if hash is invalid
+      }
+    };
+
+    updatePageFromHash();
+    window.addEventListener("hashchange", updatePageFromHash);
+
+    fetchCustomers(page, perPage);
+
+    return () => {
+      window.removeEventListener("hashchange", updatePageFromHash);
+    };
+  }, [page, perPage, router, lastPage]);
 
   async function handleDialogDeleteConfirm(id: number) {
     setIsDeleting(true);
     try {
       await axios.delete(`http://localhost:4000/customers/${id}`);
-      await fetchCustomers();
+      await fetchCustomers(page, perPage);
       toast.success("Cliente excluído com sucesso.");
     } catch (error) {
       console.log(error);
@@ -98,7 +143,7 @@ export default function Customers() {
           <Button
             disabled={loadingCustomers}
             className='text-lg'
-            onClick={() => fetchCustomers()}>
+            onClick={() => fetchCustomers(page, perPage)}>
             <RotateCw className='mr-2' />
             Recarregar Clientes
           </Button>
@@ -167,17 +212,60 @@ export default function Customers() {
             <section className='mt-10'>
               <Pagination>
                 <PaginationContent>
-                  <PaginationItem>
-                    <PaginationPrevious href='#' />
+                  <PaginationItem hidden={page === firstPage}>
+                    <PaginationPrevious href={`#${page - 1}`} />
                   </PaginationItem>
-                  <PaginationItem>
-                    <PaginationLink href='#'>1</PaginationLink>
+                  <PaginationItem hidden={page - 1 <= firstPage}>
+                    <PaginationLink
+                      className='text-md text-gray-300'
+                      href={"#" + firstPage}>
+                      {firstPage}
+                    </PaginationLink>
                   </PaginationItem>
-                  <PaginationItem>
+                  <PaginationItem
+                    className='text-gray-300'
+                    hidden={page - 2 <= firstPage}>
                     <PaginationEllipsis />
                   </PaginationItem>
+                  <PaginationItem hidden={page === firstPage}>
+                    <PaginationLink
+                      className='text-gray-300'
+                      href={
+                        page - 1 < firstPage ? "#" + page : "#" + (page - 1)
+                      }>
+                      {page > firstPage ? page - 1 : "-"}
+                    </PaginationLink>
+                  </PaginationItem>
                   <PaginationItem>
-                    <PaginationNext href='#' />
+                    <PaginationLink
+                      className='font-bold text-lg'
+                      href={"#" + page}>
+                      {page}
+                    </PaginationLink>
+                  </PaginationItem>
+                  <PaginationItem hidden={page === lastPage}>
+                    <PaginationLink
+                      className='text-sm text-gray-300'
+                      href={
+                        page + 1 > lastPage ? "#" + page : "#" + (page + 1)
+                      }>
+                      {page < lastPage ? page + 1 : "-"}
+                    </PaginationLink>
+                  </PaginationItem>
+                  <PaginationItem
+                    className='text-gray-300'
+                    hidden={page + 2 >= lastPage}>
+                    <PaginationEllipsis />
+                  </PaginationItem>
+                  <PaginationItem hidden={page + 1 >= lastPage}>
+                    <PaginationLink
+                      className='text-sm  text-gray-300'
+                      href={"#" + lastPage}>
+                      {lastPage}
+                    </PaginationLink>
+                  </PaginationItem>
+                  <PaginationItem hidden={page === lastPage}>
+                    <PaginationNext href={`#${page + 1}`} />
                   </PaginationItem>
                 </PaginationContent>
               </Pagination>
