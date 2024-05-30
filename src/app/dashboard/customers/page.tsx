@@ -5,7 +5,8 @@ import {
   IPaginatedCustomerResponse,
 } from "@/app/interfaces/interfaces";
 import { Button } from "@/components/ui/button";
-import DynamicBreadcrumb from "@/components/ui/dynamic-breadcrumb";
+import CardCustomer from "@/components/ui/cardCustomer";
+import DynamicBreadcrumb from "@/components/ui/dynamicBreadcrumb";
 import {
   Pagination,
   PaginationContent,
