@@ -175,12 +175,12 @@ export default function Customers() {
                         <TableCell className='w-content flex flex-col justify-center gap-[.5rem]'>
                           <Button
                             variant='outline'
-                            className='h-content w-content'
+                            className='h-content w-15'
                             onClick={() => handleEditClick(customer)}>
                             <Pencil />
                           </Button>
                           <Button
-                            className='h-content w-content'
+                            className='h-content w-15'
                             variant='destructive'
                             onClick={() => handleDeleteClick(customer.id)}>
                             <Trash2 />
