@@ -28,16 +28,17 @@ export default function RootLayout({
     <main className='flex flex-col h-screen'>
       {render && (
         <>
-          <section className='bg-black h-14 w-full p-4 flex text-white justify-between'>
+          <section className='bg-black h-20 w-full p-4 flex text-white justify-between'>
             <section
               id='LOGO'
-              className='h-full flex items-center w-fit'>
+              className='h-8 flex items-center w-40'>
               <Image
                 src='/next-white.svg'
-                width={150}
-                height={50}
                 alt='Logo NextJS'
-                className=''
+                width='0'
+                height='0'
+                sizes='100vw'
+                className='w-full h-auto'
                 priority
               />
             </section>
