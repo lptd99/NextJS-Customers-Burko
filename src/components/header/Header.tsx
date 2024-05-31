@@ -25,7 +25,9 @@ const Header = () => {
             className=""
             priority
           /> */}
-          <p className={s.className}>Cake Crafting</p>
+          <Link href="/">
+            <p className={s.className}>Cake Crafting</p>
+          </Link>
         </section>
         <section
           id="MENU"
@@ -63,13 +65,15 @@ const Header = () => {
           <Menu className="text-lpink" />
         </section>
         <section id="LOGOUT" className="hidden items-center lg:flex">
-          <Button
-            className={`${s.className} bg-transparent text-lpink border-2 border-lpink hover:bg-rose hover:text-white`}
-          >
-            {/* <Button onClick={handleLogout}></Button> */}
-            {/* <LogOut className="mr-1 bg-lpink hover:bg-dblue hover:text-lpink" /> */}
-            Login
-          </Button>
+          <Link href="/login">
+            <Button
+              className={`${s.className} bg-transparent text-lpink border-2 border-lpink hover:bg-rose hover:text-white`}
+            >
+              {/* <Button onClick={handleLogout}></Button> */}
+              {/* <LogOut className="mr-1 bg-lpink hover:bg-dblue hover:text-lpink" /> */}
+              Login
+            </Button>
+          </Link>
         </section>
       </section>
     </header>
