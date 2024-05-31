@@ -24,6 +24,7 @@
       "city": "Rio de Janeiro",
       "state": "RJ",
       "commodity": "Produto Fisico",
+      "inactive": true,
       "id": "2"
     },
     {
@@ -1518,9 +1519,7 @@
       "id": 123,
       "username": "example_user",
       "email": "user@example.com",
-      "roles": [
-        "user"
-      ]
+      "roles": ["user"]
     },
     "expires_in": 3600
   }
