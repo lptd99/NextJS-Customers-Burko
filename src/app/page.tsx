@@ -3,6 +3,7 @@ import React from "react";
 import Image from "next/image";
 import { Sofia } from "next/font/google";
 import { Button } from "@/components/ui/button";
+import Link from "next/link";
 
 const s = Sofia({
   subsets: ["latin"],
@@ -17,7 +18,11 @@ const page = () => {
     >
       <section className="z-50 mt-30 relative font-semibold">
         <p>Welcome to Cake Crafting</p>
-        <Button className="bg-lblue hover:bg-rose mt-24">Shop now</Button>
+        <Link href="/products">
+          <Button className="bg-lblue hover:bg-rose mt-24 text-xl">
+            Shop now
+          </Button>
+        </Link>
       </section>
       <section className="flex justify-center gap-7 ">
         <section className=" h-sreen">
