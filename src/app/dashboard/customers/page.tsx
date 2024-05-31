@@ -140,7 +140,9 @@ export default function Customers() {
           </section>
         ) : (
           <>
-            <section className='sm:hidden'>
+            <section
+              id='CARDS-CUSTOMERS'
+              className='sm:hidden'>
               {customers?.map((customer: ICustomer) => (
                 <CardCustomer
                   key={customer.id}
@@ -149,7 +151,9 @@ export default function Customers() {
                 />
               ))}
             </section>
-            <section className='hidden sm:flex mt-6 overflow-x-auto'>
+            <section
+              id='TABLE-CUSTOMERS'
+              className='hidden sm:flex mt-6 overflow-x-auto'>
               <Table className='w-full min-w-[800px]'>
                 <TableHeader>
                   <TableRow className='items-center'>
