@@ -7,15 +7,7 @@ import {
 import { Button } from "@/components/ui/button";
 import CardCustomer from "@/components/ui/cardCustomer";
 import DynamicBreadcrumb from "@/components/ui/dynamicBreadcrumb";
-import {
-  Pagination,
-  PaginationContent,
-  PaginationEllipsis,
-  PaginationItem,
-  PaginationLink,
-  PaginationNext,
-  PaginationPrevious,
-} from "@/components/ui/pagination";
+import DynamicPagination from "@/components/ui/dynamicPagination";
 import { Spinner } from "@/components/ui/spinner";
 import {
   Table,
@@ -195,66 +187,12 @@ export default function Customers() {
                 </TableBody>
               </Table>
             </section>
-            <section className='mt-10'>
-              <Pagination>
-                <PaginationContent>
-                  <PaginationItem hidden={page === firstPage}>
-                    <PaginationPrevious href={`#${page - 1}`} />
-                  </PaginationItem>
-                  <PaginationItem hidden={page - 1 <= firstPage}>
-                    <PaginationLink
-                      className='text-md text-gray-300'
-                      href={"#" + firstPage}>
-                      {firstPage}
-                    </PaginationLink>
-                  </PaginationItem>
-                  <PaginationItem
-                    className='text-gray-300'
-                    hidden={page - 2 <= firstPage}>
-                    <PaginationEllipsis />
-                  </PaginationItem>
-                  <PaginationItem hidden={page === firstPage}>
-                    <PaginationLink
-                      className='text-gray-300'
-                      href={
-                        page - 1 < firstPage ? "#" + page : "#" + (page - 1)
-                      }>
-                      {page > firstPage ? page - 1 : "-"}
-                    </PaginationLink>
-                  </PaginationItem>
-                  <PaginationItem>
-                    <PaginationLink
-                      className='font-bold text-lg'
-                      href={"#" + page}>
-                      {page}
-                    </PaginationLink>
-                  </PaginationItem>
-                  <PaginationItem hidden={page === lastPage}>
-                    <PaginationLink
-                      className='text-sm text-gray-300'
-                      href={
-                        page + 1 > lastPage ? "#" + page : "#" + (page + 1)
-                      }>
-                      {page < lastPage ? page + 1 : "-"}
-                    </PaginationLink>
-                  </PaginationItem>
-                  <PaginationItem
-                    className='text-gray-300'
-                    hidden={page + 2 >= lastPage}>
-                    <PaginationEllipsis />
-                  </PaginationItem>
-                  <PaginationItem hidden={page + 1 >= lastPage}>
-                    <PaginationLink
-                      className='text-sm  text-gray-300'
-                      href={"#" + lastPage}>
-                      {lastPage}
-                    </PaginationLink>
-                  </PaginationItem>
-                  <PaginationItem hidden={page === lastPage}>
-                    <PaginationNext href={`#${page + 1}`} />
-                  </PaginationItem>
-                </PaginationContent>
-              </Pagination>
+            <section className='hidden sm:flex my-5'>
+              <DynamicPagination
+                firstPage={firstPage}
+                lastPage={lastPage}
+                page={page}
+              />
             </section>
           </>
         )}
