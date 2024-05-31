@@ -33,11 +33,15 @@ const Header = () => {
         >
           <ul className={` font-semibold text-xl flex gap-10 ${s.className}`}>
             <li className="hover:text-white">
-              <Link href="/dashboard/customers">About</Link>
+              <Link href="/products">Cakes</Link>
             </li>
             <li className="hover:text-white">
-              <Link href="/dashboard/customers">Contact</Link>
+              <Link href="/about">About</Link>
             </li>
+            <li className="hover:text-white">
+              <Link href="/contact">Contact</Link>
+            </li>
+
             {/* <li className="hover:text-white">
               <Link href="/dashboard">Dashboard</Link>
             </li>
