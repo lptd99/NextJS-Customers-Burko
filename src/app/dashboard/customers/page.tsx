@@ -140,7 +140,16 @@ export default function Customers() {
           </section>
         ) : (
           <>
-            <section className='mt-6 overflow-x-auto'>
+            <section className='sm:hidden'>
+              {customers?.map((customer: ICustomer) => (
+                <CardCustomer
+                  key={customer.id}
+                  className='my-5'
+                  customer={customer}
+                />
+              ))}
+            </section>
+            <section className='hidden sm:flex mt-6 overflow-x-auto'>
               <Table className='w-full min-w-[800px]'>
                 <TableHeader>
                   <TableRow className='items-center'>

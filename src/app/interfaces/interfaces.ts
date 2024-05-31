@@ -10,6 +10,7 @@ export interface ICustomer {
   city: string;
   state: string;
   commodity: string;
+  inactive: boolean;
 }
 
 export interface IAddressBR {

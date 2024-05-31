@@ -19,6 +19,7 @@ const config = {
     },
     extend: {
       colors: {
+        divider: "#dddddd",
         error: "#ff0000",
         success: "#00ff00",
         test: "#FF00FF",
