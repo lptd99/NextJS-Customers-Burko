@@ -20,11 +20,11 @@ export default function CardCustomer(props: ICardCustomerProps) {
   return (
     <Card
       className={cn(
-        props.customer.inactive ? "!border-red-500" : "",
+        props.customer.inactive === true ? "!border-red-500" : "",
         props.className,
         "relative w-full border border-primary/15 rounded-xl p-4 "
       )}>
-      {props.customer.inactive && (
+      {props.customer.inactive === true && (
         <section className='absolute top-4 right-4 bg-red-500 text-sm text-white rounded-md px-3 py-1'>
           Inativo
         </section>
