@@ -44,6 +44,7 @@ export default function Customers() {
   const [lastPage, setLastPage] = useState<number>(1);
   const [customerResponse, setCustomerResponse] =
     useState<IPaginatedCustomerResponse | null>(null);
+  const [isFirstLoad, setIsFirstLoad] = useState<boolean>(true);
 
   const router = useRouter();
   const [isDeleting, setIsDeleting] = useState<boolean>(false);
@@ -62,7 +63,7 @@ export default function Customers() {
   async function fetchCustomers(page: number, perPage: number) {
     setLoadingCustomers(true);
     try {
-      // await new Promise((resolve) => setTimeout(resolve, 1000));
+      // await new Promise((resolve) => setTimeout(resolve, 500));
       const response = await axios.get(
         `http://localhost:4000/customers?_page=${page}&_per_page=${perPage}`
       );
@@ -74,6 +75,7 @@ export default function Customers() {
       console.log("Error fetching customers.");
     }
     setLoadingCustomers(false);
+    setIsFirstLoad(false);
   }
 
   useEffect(() => {
@@ -83,7 +85,7 @@ export default function Customers() {
     return () => {
       window.removeEventListener("hashchange", updatePageFromHash);
     };
-  }, [page, perPage, router, lastPage]);
+  }, [page, perPage, router]);
 
   async function handleDialogDeleteConfirm(id: number) {
     setIsDeleting(true);
@@ -131,7 +133,7 @@ export default function Customers() {
             </Button>
           </Link>
         </section>
-        {loadingCustomers ? (
+        {loadingCustomers && isFirstLoad ? (
           <section className='flex flex-col items-center h-screen mt-[10rem]'>
             <section className='flex flex-row p-[5rem] items-center'>
               <Spinner></Spinner>
