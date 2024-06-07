@@ -11,7 +11,7 @@ import {
   CardTitle,
 } from "@/components/ui/card";
 import CommodityCombobox from "@/components/ui/commodityCombobox";
-import DynamicBreadcrumb from "@/components/ui/dynamic-breadcrumb";
+import DynamicBreadcrumb from "@/components/ui/dynamicBreadcrumb";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Spinner } from "@/components/ui/spinner";

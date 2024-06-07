@@ -5,16 +5,9 @@ import {
   IPaginatedCustomerResponse,
 } from "@/app/interfaces/interfaces";
 import { Button } from "@/components/ui/button";
-import DynamicBreadcrumb from "@/components/ui/dynamic-breadcrumb";
-import {
-  Pagination,
-  PaginationContent,
-  PaginationEllipsis,
-  PaginationItem,
-  PaginationLink,
-  PaginationNext,
-  PaginationPrevious,
-} from "@/components/ui/pagination";
+import CardCustomer from "@/components/ui/cardCustomer";
+import DynamicBreadcrumb from "@/components/ui/dynamicBreadcrumb";
+import DynamicPagination from "@/components/ui/dynamicPagination";
 import { Spinner } from "@/components/ui/spinner";
 import {
   Table,
@@ -51,6 +44,7 @@ export default function Customers() {
   const [lastPage, setLastPage] = useState<number>(1);
   const [customerResponse, setCustomerResponse] =
     useState<IPaginatedCustomerResponse | null>(null);
+  const [isFirstLoad, setIsFirstLoad] = useState<boolean>(true);
 
   const router = useRouter();
   const [isDeleting, setIsDeleting] = useState<boolean>(false);
@@ -69,7 +63,7 @@ export default function Customers() {
   async function fetchCustomers(page: number, perPage: number) {
     setLoadingCustomers(true);
     try {
-      // await new Promise((resolve) => setTimeout(resolve, 1000));
+      // await new Promise((resolve) => setTimeout(resolve, 500));
       const response = await axios.get(
         `http://localhost:4000/customers?_page=${page}&_per_page=${perPage}`
       );
@@ -81,6 +75,7 @@ export default function Customers() {
       console.log("Error fetching customers.");
     }
     setLoadingCustomers(false);
+    setIsFirstLoad(false);
   }
 
   useEffect(() => {
@@ -90,7 +85,7 @@ export default function Customers() {
     return () => {
       window.removeEventListener("hashchange", updatePageFromHash);
     };
-  }, [page, perPage, router, lastPage]);
+  }, [page, perPage, router]);
 
   async function handleDialogDeleteConfirm(id: number) {
     setIsDeleting(true);
@@ -138,7 +133,7 @@ export default function Customers() {
             </Button>
           </Link>
         </section>
-        {loadingCustomers ? (
+        {loadingCustomers && isFirstLoad ? (
           <section className='flex flex-col items-center h-screen mt-[10rem]'>
             <section className='flex flex-row p-[5rem] items-center'>
               <Spinner></Spinner>
@@ -147,7 +142,20 @@ export default function Customers() {
           </section>
         ) : (
           <>
-            <section className='mt-6 overflow-x-auto'>
+            <section
+              id='CARDS-CUSTOMERS'
+              className='sm:hidden'>
+              {customers?.map((customer: ICustomer) => (
+                <CardCustomer
+                  key={customer.id}
+                  className='my-5'
+                  customer={customer}
+                />
+              ))}
+            </section>
+            <section
+              id='TABLE-CUSTOMERS'
+              className='hidden sm:flex mt-6 overflow-x-auto'>
               <Table className='w-full min-w-[800px]'>
                 <TableHeader>
                   <TableRow className='items-center'>
@@ -169,12 +177,12 @@ export default function Customers() {
                         <TableCell className='w-content flex flex-col justify-center gap-[.5rem]'>
                           <Button
                             variant='outline'
-                            className='h-content w-content'
+                            className='h-content w-15'
                             onClick={() => handleEditClick(customer)}>
                             <Pencil />
                           </Button>
                           <Button
-                            className='h-content w-content'
+                            className='h-content w-15'
                             variant='destructive'
                             onClick={() => handleDeleteClick(customer.id)}>
                             <Trash2 />
@@ -194,66 +202,12 @@ export default function Customers() {
                 </TableBody>
               </Table>
             </section>
-            <section className='mt-10'>
-              <Pagination>
-                <PaginationContent>
-                  <PaginationItem hidden={page === firstPage}>
-                    <PaginationPrevious href={`#${page - 1}`} />
-                  </PaginationItem>
-                  <PaginationItem hidden={page - 1 <= firstPage}>
-                    <PaginationLink
-                      className='text-md text-gray-300'
-                      href={"#" + firstPage}>
-                      {firstPage}
-                    </PaginationLink>
-                  </PaginationItem>
-                  <PaginationItem
-                    className='text-gray-300'
-                    hidden={page - 2 <= firstPage}>
-                    <PaginationEllipsis />
-                  </PaginationItem>
-                  <PaginationItem hidden={page === firstPage}>
-                    <PaginationLink
-                      className='text-gray-300'
-                      href={
-                        page - 1 < firstPage ? "#" + page : "#" + (page - 1)
-                      }>
-                      {page > firstPage ? page - 1 : "-"}
-                    </PaginationLink>
-                  </PaginationItem>
-                  <PaginationItem>
-                    <PaginationLink
-                      className='font-bold text-lg'
-                      href={"#" + page}>
-                      {page}
-                    </PaginationLink>
-                  </PaginationItem>
-                  <PaginationItem hidden={page === lastPage}>
-                    <PaginationLink
-                      className='text-sm text-gray-300'
-                      href={
-                        page + 1 > lastPage ? "#" + page : "#" + (page + 1)
-                      }>
-                      {page < lastPage ? page + 1 : "-"}
-                    </PaginationLink>
-                  </PaginationItem>
-                  <PaginationItem
-                    className='text-gray-300'
-                    hidden={page + 2 >= lastPage}>
-                    <PaginationEllipsis />
-                  </PaginationItem>
-                  <PaginationItem hidden={page + 1 >= lastPage}>
-                    <PaginationLink
-                      className='text-sm  text-gray-300'
-                      href={"#" + lastPage}>
-                      {lastPage}
-                    </PaginationLink>
-                  </PaginationItem>
-                  <PaginationItem hidden={page === lastPage}>
-                    <PaginationNext href={`#${page + 1}`} />
-                  </PaginationItem>
-                </PaginationContent>
-              </Pagination>
+            <section className='hidden sm:flex my-5'>
+              <DynamicPagination
+                firstPage={firstPage}
+                lastPage={lastPage}
+                page={page}
+              />
             </section>
           </>
         )}

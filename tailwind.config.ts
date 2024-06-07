@@ -36,6 +36,7 @@ const config = {
         rose: "#ba857f",
         dpink: "#eeb0b3",
         lpink: "#f1d3d3",
+        divider: "#dddddd",
         error: "#ff0000",
         success: "#00ff00",
         test: "#FF00FF",
