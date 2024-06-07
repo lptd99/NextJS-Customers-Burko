@@ -18,7 +18,7 @@ const page = () => {
     >
       <section className="z-50 mt-30 relative font-semibold">
         <p>Welcome to Cake Crafting</p>
-        <Link href="/products">
+        <Link href="/cakes">
           <Button className="bg-lblue hover:bg-rose mt-24 text-xl">
             Shop now
           </Button>
