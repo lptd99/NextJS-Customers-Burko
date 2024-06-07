@@ -1513,6 +1513,7 @@
       "commodity": "Produto Fisico"
     }
   ],
+
   "login": {
     "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiaWF0IjoxNTE2MjM5MDIyLCJleHAiOjE1MTYyMzkwMjJ9.-zjVpC2Mgi3dSYxV5gH6TfjvBm7Fk12c7FJH65Gx",
     "user": {
@@ -1522,5 +1523,23 @@
       "roles": ["user"]
     },
     "expires_in": 3600
-  }
+  },
+  "products": [
+    {
+      "id": 1,
+      "name": "Naked Cake - Vanilla",
+      "price": 12.99,
+      "description": "Pound cake filled with vanilla cream and vanilla topping, decorated with seasonal fruits.",
+      "image": "/images/nakedcakevanila.jpg",
+      "category": "cake"
+    },
+    {
+      "id": 2,
+      "name": "Naked Cake - Peanut Butter",
+      "price": 12.99,
+      "description": "Pound cake filled with vanilla cream and vanilla topping, decorated with seasonal fruits.",
+      "image": "/images/nakedcakepeanutbutter.jpg",
+      "category": "cake"
+    }
+  ]
 }
